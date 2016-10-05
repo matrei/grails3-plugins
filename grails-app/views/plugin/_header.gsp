@@ -23,7 +23,7 @@
                     <li class=""><a href="https://grails.org/learn.html">Learn</a></li>
                     <li class=""><a href="https://grails.org/documentation.html">Documentation</a></li><li class=""><a href="support.html">Support</a></li>
                     <li class=""><a href="https://grails.org/download.html">Download</a></li>
-                    <li class=""><a href="https://grails.org/plugins.html">Plugins</a></li>
+                    <li class=""><a href="http://plugins.grails.org">Plugins</a></li>
                     <li class=""><a href="https://grails.org/community.html">Community</a></li>
                     <li class=""><a href="https://grails.org/ecosystem.html">Ecosystem</a></li>
                     <li><a class="socialize-button" href="#">Socialize</a></li>
