@@ -22,7 +22,7 @@ class SyncPluginsJobService implements SchwartzJob {
 			compare.newVersions.each { Compare.NewVersion newVersion ->
 				String name = newVersion.plugin.name
 				String version = newVersion.version
-				twitterService.tweet "$name $version released: https://grails.org/plugin/$name"
+				twitterService.tweet "$name $version released: http://plugins.grails.org/plugin/$name"
 			}
 		}
 
