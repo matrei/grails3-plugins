@@ -78,7 +78,7 @@
             <li><a href="https://bintray.com/grails/plugins" target="_top">Bintray Repository</a></li>
             <li><a href="https://medium.com/@benorama/how-to-publish-your-grails-3-plugin-to-bintray-c341b24f567d" target="_top">Publishing Guide</a></li>
             <li><a href="http://blog.agileorbit.com/2015/10/07/Publishing-Grails-3-Plugins.html" target="_top">Publishing FAQ</a></li>
-            <li><a href="https://github.com/sheehan/grails3-plugins/" target="_top">Portal on Github</a></li>
+            <li><a href="https://github.com/grails/grails3-plugins" target="_top">Portal on Github</a></li>
         </ul>
         <div class="timeline-wrapper">
             <a class="twitter-timeline" href="https://twitter.com/grails_plugins" height="600" data-chrome="nofooter"></a>
@@ -91,7 +91,7 @@
                 <div class="search-input-section">
                     <div class="form-group">
                         <form class="search-form">
-                            <input class="search-input form-control" type="text" placeholder="Search plugins...">
+                            <input class="search-input form-control" type="text" placeholder="Search Grails 3 plugins...">
                         </form>
                         <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
                         <span class="glyphicon glyphicon-remove-sign clear-search hide" aria-hidden="true"></span>
