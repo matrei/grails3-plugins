@@ -8,8 +8,6 @@ import java.text.SimpleDateFormat
 
 class PluginController {
 
-    PluginService pluginService
-
     def index() {
         Map json = [
             baseUrl: createLink(uri: '/')

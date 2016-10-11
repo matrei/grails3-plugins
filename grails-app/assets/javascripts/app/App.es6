@@ -42,6 +42,13 @@ grailsplugins.App = class {
 
     onPluginsFetch(plugins) {
         this.plugins = plugins;
+
+        if (!this.plugins._plugins.length) {
+            this.show();
+            $('.main-content').html('<div class="page-message">Fetching the latest plugins... Please try again in a moment.</div>');
+            return;
+        }
+
         this.searchView = new grailsplugins.views.SearchView($('.search-section'), this.plugins);
         this.pluginView = new grailsplugins.views.PluginView($('.plugin-section'));
 
