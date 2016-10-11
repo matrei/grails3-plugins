@@ -11,7 +11,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only"></span><span class="icon-bar"></span><span class="icon-bar"></span><span
                         class="icon-bar"></span>
-                </button><a class="navbar-brand" href="index.html" class="self-link">
+                </button><a class="navbar-brand" href="https://grails.org" class="self-link">
                 <i class="fa grails-icon">
                     <asset:image src="grails-cupsonly-logo-white.svg" />
                 </i> Grails
@@ -21,7 +21,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class=""><a href="https://grails.org/learn.html">Learn</a></li>
-                    <li class=""><a href="https://grails.org/documentation.html">Documentation</a></li><li class=""><a href="support.html">Support</a></li>
+                    <li class=""><a href="https://grails.org/documentation.html">Documentation</a></li>
+                    <li class=""><a href="https://grails.org/support.html">Support</a></li>
                     <li class=""><a href="https://grails.org/download.html">Download</a></li>
                     <li class=""><a href="http://plugins.grails.org">Plugins</a></li>
                     <li class=""><a href="https://grails.org/community.html">Community</a></li>
