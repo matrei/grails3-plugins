@@ -91,7 +91,7 @@
                 <div class="search-input-section">
                     <div class="form-group">
                         <form class="search-form">
-                            <input class="search-input form-control" type="text" placeholder="Search Grails 3 plugins...">
+                            <input class="search-input form-control" type="text" placeholder="Search Grails 3 plugins..." autofocus>
                         </form>
                         <span class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
                         <span class="glyphicon glyphicon-remove-sign clear-search hide" aria-hidden="true"></span>
