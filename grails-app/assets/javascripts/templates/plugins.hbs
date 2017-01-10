@@ -10,7 +10,7 @@
     {{#each plugins}}
         <li>
             <div>
-                <a class="plugin-name" href="{{baseUrl}}/plugin/{{name}}" data-internal>{{name}}</a>
+                <a class="plugin-name" href="{{baseUrl}}/plugin/{{owner}}/{{name}}" data-internal>{{name}}</a>
                 <span class="external-links">
                     {{#if githubRepo}}
                         <a href="{{githubRepo.html_url}}" title="Github repository" target="_top"><img src="{{baseUrl}}/assets/plainicon.com-50224-svg.svg"></a>

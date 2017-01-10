@@ -16,9 +16,14 @@ class PluginController {
     }
 
     def plugin() {
-        def plugins = Plugins.get()
-        Map plugin = plugins.find { it.name == params.plugin }
+        renderPlugin Plugins.get().find { it.name == params.pluginName }
+    }
 
+    def pluginWithOwner() {
+        renderPlugin Plugins.get().find { it.name == params.pluginName && it.owner == params.ownerName }
+    }
+
+    private renderPlugin(Map plugin) {
         Map json = [
             baseUrl: createLink(uri: '/')
         ]

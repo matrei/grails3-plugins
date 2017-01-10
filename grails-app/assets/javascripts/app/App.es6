@@ -27,15 +27,17 @@ grailsplugins.App = class {
     setupRouter() {
         page.base(this.baseUrl);
         page('/q/:q', (context, next) => {
-            // ga('send', 'pageview', canonicalPath);
             this.showSearch(context.params.q);
         });
         page('/plugin/:plugin', (context, next) => {
-            // ga('send', 'pageview', canonicalPath);
-            this.showPlugin(context.params.plugin);
+            let plugin = this.plugins.findByName(context.params.plugin);
+            this.showPlugin(plugin);
+        });
+        page('/plugin/:owner/:name', (context, next) => {
+            let plugin = this.plugins.findByOwnerAndName(context.params.owner, context.params.name);
+            this.showPlugin(plugin);
         });
         page('*', (context, next) => {
-            // ga('send', 'pageview', canonicalPath);
             this.showSearch('');
         });
     }
@@ -89,13 +91,12 @@ grailsplugins.App = class {
         }
     }
 
-    showPlugin(pluginName) {
+    showPlugin(plugin) {
         this._lastSearchScrollTop = $('body').scrollTop();
 
-        document.title = pluginName;
+        document.title = plugin.name;
         $('.search-section').addClass('hide');
         $('.plugin-section').removeClass('hide');
-        let plugin = this.plugins.findByName(pluginName);
         this.pluginView.showPlugin(plugin);
     }
 };

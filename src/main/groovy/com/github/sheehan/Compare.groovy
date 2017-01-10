@@ -6,7 +6,7 @@ class Compare {
 
     Compare(List<Map> oldJson, List<Map> newJson) {
         newJson.each { plugin ->
-            Map match = oldJson.find { it.name == plugin.name }
+            Map match = oldJson.find { it.name == plugin.name && it.owner == plugin.owner }
             if (!match) {
                 if (plugin.latest_version) {
                     newVersions << new NewVersion(version: plugin.latest_version, plugin: plugin)

@@ -58,4 +58,38 @@ class CompareSpec extends Specification {
         compare.newVersions[1].plugin.name == 'plugin1'
         compare.newVersions[1].version == '1.1'
     }
+
+    void 'it should handle plugins with the same name - no changes'() {
+        given:
+        List<Map> oldJson = [
+            [
+                name: 'plugin1',
+                owner: 'xxx',
+                latest_version: '1.0'
+            ],
+            [
+                name: 'plugin1',
+                owner: 'yyy',
+                latest_version: '2.0'
+            ]
+        ]
+        List<Map> newJson = [
+            [
+                name: 'plugin1',
+                owner: 'yyy',
+                latest_version: '2.0'
+            ],
+            [
+                name: 'plugin1',
+                owner: 'xxx',
+                latest_version: '1.0'
+            ],
+        ]
+
+        when:
+        Compare compare = new Compare(oldJson, newJson)
+
+        then:
+        !compare.newVersions.size()
+    }
 }

@@ -77,6 +77,10 @@ grailsplugins.Plugins = class {
         return _.findWhere(this._plugins, {name: name});
     }
 
+    findByOwnerAndName(owner, name) {
+        return _.findWhere(this._plugins, {owner: owner, name: name});
+    }
+
     getLabels() {
         return this._allLabels;
     }

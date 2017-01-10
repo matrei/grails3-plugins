@@ -20,9 +20,10 @@ class SyncPluginsJobService implements SchwartzJob {
 		Compare compare = pluginService.refreshPlugins()
 		if (compare) {
 			compare.newVersions.each { Compare.NewVersion newVersion ->
+				String owner = newVersion.plugin.owner
 				String name = newVersion.plugin.name
 				String version = newVersion.version
-				twitterService.tweet "$name $version released: http://plugins.grails.org/plugin/$name"
+				twitterService.tweet "$name $version released: http://plugins.grails.org/plugin/$owner/$name"
 			}
 		}
 
