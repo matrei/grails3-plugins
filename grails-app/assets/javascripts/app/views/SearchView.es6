@@ -14,7 +14,9 @@ grailsplugins.views.SearchView = class {
         });
         $el.find('.clear-search').click(event => {
             event.preventDefault();
-            page('');
+            this.$el.find('.search-input').val('');
+            this.doSearch();
+            page('/');
         });
     }
 
