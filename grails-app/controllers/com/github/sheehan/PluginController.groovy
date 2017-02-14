@@ -16,11 +16,19 @@ class PluginController {
     }
 
     def plugin() {
-        renderPlugin Plugins.get().find { it.name == params.pluginName }
+        def plugin = Plugins.get().find { it.name == params.pluginName }
+        if ( !plugin ) {
+            return response.sendError(404)
+        }
+        renderPlugin plugin
     }
 
     def pluginWithOwner() {
-        renderPlugin Plugins.get().find { it.name == params.pluginName && it.owner == params.ownerName }
+        def plugin = Plugins.get().find { it.name == params.pluginName && it.owner == params.ownerName }
+        if ( !plugin ) {
+            return response.sendError(404)
+        }
+        renderPlugin plugin
     }
 
     private renderPlugin(Map plugin) {

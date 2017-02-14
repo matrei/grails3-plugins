@@ -5,3 +5,7 @@ This project is a Grails app that provides a better viewing experience for Grail
 
 It is published at <http://plugins.grails.org/>. Plugin data is updated hourly.
 
+## Assets Usage Rights
+
+404 image was obtained form [Pixbay](https://pixabay.com/en/error-404-page-was-not-found-news-1349562/)
+with License CC0 Public Domain / Free for commercial use / No attribution required 
