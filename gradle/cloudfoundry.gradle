@@ -1,0 +1,10 @@
+apply plugin: 'cloudfoundry'
+
+cloudfoundry {
+    target = "https://api.run.pivotal.io"
+    organization = "grails-org"
+    application = "grails3-plugins"
+    space = "plugins"
+    file = file("build/libs/grails3-plugins-${version}.war")
+    uri = 'http://plugins.grails.org'
+}

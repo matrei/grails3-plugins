@@ -9,6 +9,7 @@ buildscript {
         classpath "org.grails.plugins:hibernate5:6.0.7"
         classpath "net.errbuddy.plugins:babel-asset-pipeline:2.0.8"
         classpath 'com.agileorbit:schwartz:1.0.0'
+        classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.2'
     }
 }
 
@@ -20,6 +21,7 @@ apply plugin:"idea"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
+apply from: 'gradle/cloudfoundry.gradle'
 
 repositories {
     mavenLocal()
@@ -92,8 +94,4 @@ assets {
 
 task stage() {
     dependsOn assemble
-}
-
-jar {
-    archiveName 'grails-plugins.jar'
 }
