@@ -5,6 +5,6 @@ cloudfoundry {
     organization = "grails-org"
     application = "grails3-plugins"
     space = "plugins"
-    file = file("build/libs/grails3-plugins-${version}.war")
+    file = file("$buildDir/libs/grails3-plugins-${version}.war")
     uri = 'http://plugins.grails.org'
 }
