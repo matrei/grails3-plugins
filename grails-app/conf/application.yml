@@ -139,3 +139,13 @@ grails:
     assets:
         babel:
             enabled: true
+---
+com:
+    objectcomputing:
+        training:
+            refresh:
+                enabled: false
+---
+grails:
+    cors:
+        enabled: true
