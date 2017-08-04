@@ -34,8 +34,8 @@ repositories {
 
 dependencies {
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
-    compile "com.bertramlabs.plugins:less-asset-pipeline:$assetPipelineVersion"
-    compile "com.bertramlabs.plugins:handlebars-asset-pipeline:$assetPipelineVersion"
+    assets "com.bertramlabs.plugins:less-asset-pipeline:$assetPipelineVersion"
+    assets "com.bertramlabs.plugins:handlebars-asset-pipeline:$assetPipelineVersion"
     compile ("net.errbuddy.plugins:babel-asset-pipeline:$babelAssetPipelineVersion") {
         exclude group: 'org.grails.plugins', module: 'asset-pipeline'
     }
