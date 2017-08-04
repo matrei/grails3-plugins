@@ -2,11 +2,14 @@ package com.github.sheehan
 
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
+import groovy.util.logging.Slf4j
 import groovyx.net.http.HttpResponseDecorator
+import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 
 import javax.annotation.PreDestroy
 
+@Slf4j
 class BintrayService implements GrailsConfigurationAware {
 
     private RESTClient bintrayClient
@@ -14,9 +17,9 @@ class BintrayService implements GrailsConfigurationAware {
     List<Map> fetchPackages() {
         List packages = getPackageList()
 
-        println '\nfetching packages...'
+        log.info '\nfetching packages...'
         packages.sort { it.name.toLowerCase() }.collect {
-            println it.name
+            log.info '{}', it.name
             getPackage(it.name)
         }
     }
@@ -27,11 +30,11 @@ class BintrayService implements GrailsConfigurationAware {
         List packages = []
 
         while (true) {
-            println "fetching package list. start=$start"
             HttpResponseDecorator resp = bintrayClient.get(
                 path: 'repos/grails/plugins/packages',
                 query: [start_pos: start]
             )
+            log.info "fetching package list. start=$start"
 
             total = resp.headers['X-RangeLimit-Total'].value.toInteger()
             start = resp.headers['X-RangeLimit-EndPos'].value.toInteger() + 1

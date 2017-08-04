@@ -2,12 +2,14 @@ package com.github.sheehan
 
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
+import groovy.util.logging.Slf4j
 import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.RESTClient
 import org.apache.http.client.HttpResponseException
 
 import javax.annotation.PreDestroy
 
+@Slf4j
 class GithubService implements GrailsConfigurationAware {
 
     private RESTClient githubClient
@@ -25,13 +27,14 @@ class GithubService implements GrailsConfigurationAware {
             ])
         } catch (HttpResponseException e) {
             if (e.statusCode == 404) {
-                println "github repo not found: $ownerAndRepo"
+                log.warn 'github repo not found: {}', ownerAndRepo
+
             } else {
-                println "failed to fetch github repo: $ownerAndRepo"
+                log.warn 'failed to fetch github repo: {}', ownerAndRepo
                 e.printStackTrace()
             }
         } catch (e) {
-            println "failed to fetch github repo: $ownerAndRepo"
+            log.error 'failed to fetch github repo: {}', ownerAndRepo
             e.printStackTrace()
         }
         data
