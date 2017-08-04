@@ -134,3 +134,8 @@ bintray:
     token: ${GP_BINTRAY_TOKEN}
 quartz:
     pluginEnabled: ${GP_QUARTZ_ENABLED}
+---
+grails:
+    assets:
+        babel:
+            enabled: true
