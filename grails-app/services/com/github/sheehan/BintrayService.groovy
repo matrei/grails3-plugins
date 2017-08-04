@@ -30,11 +30,16 @@ class BintrayService implements GrailsConfigurationAware {
         List packages = []
 
         while (true) {
-            HttpResponseDecorator resp = bintrayClient.get(
-                path: 'repos/grails/plugins/packages',
-                query: [start_pos: start]
-            )
             log.info "fetching package list. start=$start"
+            try {
+                HttpResponseDecorator resp = bintrayClient.get(
+                        path: 'repos/grails/plugins/packages',
+                        query: [start_pos: start]
+                )
+
+            } catch ( HttpResponseException e) {
+                break
+            }
 
             total = resp.headers['X-RangeLimit-Total'].value.toInteger()
             start = resp.headers['X-RangeLimit-EndPos'].value.toInteger() + 1
