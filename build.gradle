@@ -38,7 +38,9 @@ dependencies {
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
     compile "com.bertramlabs.plugins:less-asset-pipeline:$assetPipelineVersion"
     compile "com.bertramlabs.plugins:handlebars-asset-pipeline:$assetPipelineVersion"
-    compile "net.errbuddy.plugins:babel-asset-pipeline:$babelAssetPipelineVersion"
+    compile ("net.errbuddy.plugins:babel-asset-pipeline:$babelAssetPipelineVersion") {
+        exclude group: 'org.grails.plugins', module: 'asset-pipeline'
+    }
 
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
