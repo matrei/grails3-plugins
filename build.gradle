@@ -82,10 +82,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = gradleWrapperVersion
 }
 
-assets {
-    minifyJs = true
-    minifyCss = true
-}
 
 assets {
     minifyJs = true
