@@ -6,6 +6,7 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
+        classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
         classpath "org.grails.plugins:hibernate5:6.0.7"
         classpath "net.errbuddy.plugins:babel-asset-pipeline:$babelAssetPipelineVersion"
         classpath 'com.agileorbit:schwartz:1.0.0'
@@ -59,7 +60,8 @@ dependencies {
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
-
+    runtime "com.h2database:h2"
+    runtime "org.apache.tomcat:tomcat-jdbc:8.5.0"
     testCompile "org.grails:grails-gorm-testing-support"
     testCompile "org.grails.plugins:geb"
     testCompile "org.grails:grails-web-testing-support"
@@ -77,11 +79,6 @@ bootRun {
     systemProperties System.properties
     jvmArgs('-Dspring.output.ansi.enabled=always')
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = gradleWrapperVersion
-}
-
 
 assets {
     minifyJs = true
