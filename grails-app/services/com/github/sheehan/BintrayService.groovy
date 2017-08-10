@@ -36,15 +36,13 @@ class BintrayService implements GrailsConfigurationAware {
                         path: 'repos/grails/plugins/packages',
                         query: [start_pos: start]
                 )
-
+                total = resp.headers['X-RangeLimit-Total'].value.toInteger()
+                start = resp.headers['X-RangeLimit-EndPos'].value.toInteger() + 1
+                packages.addAll resp.data
+                
             } catch ( HttpResponseException e) {
                 break
             }
-
-            total = resp.headers['X-RangeLimit-Total'].value.toInteger()
-            start = resp.headers['X-RangeLimit-EndPos'].value.toInteger() + 1
-
-            packages.addAll resp.data
 
             if (start == total) break
         }
