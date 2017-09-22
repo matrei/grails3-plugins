@@ -7,7 +7,6 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
         classpath "org.grails.plugins:hibernate5:${gormVersion-".RELEASE"}"
-        classpath "net.errbuddy.plugins:babel-asset-pipeline:$babelAssetPipelineVersion"
         classpath 'com.agileorbit:schwartz:1.0.0'
         classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.3'
         classpath 'com.fasterxml.jackson.core:jackson-core:2.7.3'
@@ -34,12 +33,6 @@ repositories {
 
 dependencies {
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
-    assets "com.bertramlabs.plugins:less-asset-pipeline:$assetPipelineVersion"
-    assets "com.bertramlabs.plugins:handlebars-asset-pipeline:$assetPipelineVersion"
-    compile ("net.errbuddy.plugins:babel-asset-pipeline:$babelAssetPipelineVersion") {
-        exclude group: 'org.grails.plugins', module: 'asset-pipeline'
-    }
-
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
@@ -76,6 +69,9 @@ dependencies {
     compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
 
     compile 'org.grails.plugins:oci-training:0.0.5'
+    compile 'org.grails.plugins:grails-navigation:0.1'
+    compile "com.vladsch.flexmark:flexmark-all:$flexmarkVersion"
+    compile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
 }
 
 bootRun {
@@ -87,15 +83,6 @@ bootRun {
 assets {
     minifyJs = true
     minifyCss = true
-    configOptions = [
-      less: [
-        compiler: 'less4j' // or standard
-      ],
-      handlebars: [
-          templateRoot: 'templates',
-          templatePathSeperator: '/'
-      ]
-    ]
 }
 
 task stage() {

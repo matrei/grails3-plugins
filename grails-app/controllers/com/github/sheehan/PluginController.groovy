@@ -1,62 +1,60 @@
 package com.github.sheehan
 
+import grails.config.Config
 import grails.converters.JSON
+import grails.core.support.GrailsConfigurationAware
 import groovy.json.JsonSlurper
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
-class PluginController {
+class PluginController implements GrailsConfigurationAware {
 
-    def index() {
-        Map json = [
-            baseUrl: createLink(uri: '/')
-        ]
-        render view: 'index', model: [json: json]
+    boolean refreshEnabled
+
+    @Override
+    void setConfiguration(Config co) {
+        refreshEnabled = co.getProperty('com.grails.plugins.refresh.refresh.enabled', Boolean, false)
     }
 
-    def plugin() {
-        def plugin = Plugins.get().find { it.name == params.pluginName }
+
+    PluginService pluginService
+
+    def index(String query) {
+        render(view: 'index', model: [
+                pluginList: pluginService.findAll(query),
+                query: query,
+                pluginTotal: pluginService.count(),
+                topRatedPlugins: pluginService.topRatedPlugins(),
+                latestPlugins: pluginService.latestPlugins(),
+        ])
+    }
+
+    def refresh() {
+        if ( !refreshEnabled ) {
+            render status: 404
+            return
+        }
+        pluginService.refreshPlugins()
+        redirect action: 'index'
+    }
+
+    def plugin(String pluginName) {
+        Map plugin = pluginService.findByPluginName(pluginName)
         if ( !plugin ) {
-            return response.sendError(404)
+            response.sendError(404)
+            return
         }
-        renderPlugin plugin
+        [plugin: plugin]
     }
 
-    def pluginWithOwner() {
-        def plugin = Plugins.get().find { it.name == params.pluginName && it.owner == params.ownerName }
+    def pluginWithOwner(String ownerName, String pluginName) {
+        Map plugin = pluginService.findByOwnerNameAndPluginName(ownerName, pluginName)
+
         if ( !plugin ) {
-            return response.sendError(404)
+            response.sendError(404)
+            return
         }
-        renderPlugin plugin
-    }
-
-    private renderPlugin(Map plugin) {
-        Map json = [
-            baseUrl: createLink(uri: '/')
-        ]
-
-        Map model = [
-            json  : json,
-            plugin: plugin,
-            domain: request.getServerName().replaceAll(".*\\.(?=.*\\.)", ""),
-        ]
-
-        if (plugin.latest_version_updated) {
-            DateFormat utc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-            DateFormat display = new SimpleDateFormat('MMM d, yyyy')
-            Date date = utc.parse(plugin.latest_version_updated)
-            model.lastUpdated = display.format(date)
-        }
-
-        if (plugin.githubRepo) {
-            model.stars = plugin.githubRepo.stargazers_count
-        }
-
-        render view: 'index', model: model
-    }
-
-    def json() {
-        render Plugins.get() as JSON
+        render view: 'plugin', model: [plugin: plugin]
     }
 }

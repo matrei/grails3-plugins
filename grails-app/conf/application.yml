@@ -149,3 +149,10 @@ com:
 grails:
     cors:
         enabled: true
+---
+com:
+    grails:
+        plugins:
+            refresh:
+                refresh:
+                    enabled: true
