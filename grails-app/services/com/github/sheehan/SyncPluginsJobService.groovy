@@ -4,9 +4,11 @@ import com.agileorbit.schwartz.SchwartzJob
 import grails.util.Environment
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import org.quartz.DisallowConcurrentExecution
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
 
+@DisallowConcurrentExecution
 @CompileStatic
 @Slf4j
 class SyncPluginsJobService implements SchwartzJob {

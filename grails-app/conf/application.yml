@@ -144,7 +144,7 @@ com:
     objectcomputing:
         training:
             refresh:
-                enabled: false
+                enabled: true
 ---
 grails:
     cors:
@@ -155,4 +155,4 @@ com:
         plugins:
             refresh:
                 refresh:
-                    enabled: false
+                    enabled: true
