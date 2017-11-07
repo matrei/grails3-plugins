@@ -32,6 +32,7 @@ class SyncPluginsJobService implements SchwartzJob {
 
 	void buildTriggers() {
 		if (!Environment.developmentMode) {
+			triggers << factory('Plugins triggers - run_once_immediately').startNow().noRepeat().build()
 			triggers << factory('repeat every hour').intervalInHours(1).build()
 		}
 	}

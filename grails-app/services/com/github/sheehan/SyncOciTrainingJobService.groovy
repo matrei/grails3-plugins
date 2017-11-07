@@ -26,7 +26,7 @@ class SyncOciTrainingJobService implements SchwartzJob {
 
 	void buildTriggers() {
 		if (!Environment.developmentMode) {
-			triggers << factory('OCI Training Trigger - run_once_immediately').noRepeat().build()
+			triggers << factory('OCI Training Trigger - run_once_immediately').startNow().noRepeat().build()
 			triggers << factory('OCI Training Trigger - repeat every six hours').intervalInHours(6).build()
 		}
 	}
