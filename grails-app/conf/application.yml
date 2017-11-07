@@ -155,4 +155,4 @@ com:
         plugins:
             refresh:
                 refresh:
-                    enabled: true
+                    enabled: false
