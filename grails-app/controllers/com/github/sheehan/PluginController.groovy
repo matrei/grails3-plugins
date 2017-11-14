@@ -21,7 +21,7 @@ class PluginController implements GrailsConfigurationAware {
 
     @Override
     void setConfiguration(Config co) {
-        refreshEnabled = co.getProperty('com.grails.plugins.refresh.refresh.enabled', Boolean, false)
+        refreshEnabled = co.getProperty('com.grails.plugins.refresh.enabled', Boolean, false)
     }
 
 
