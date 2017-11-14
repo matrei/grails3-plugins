@@ -10,6 +10,13 @@ import java.text.SimpleDateFormat
 
 class PluginController implements GrailsConfigurationAware {
 
+    static allowedMethods = [
+            index: 'GET',
+            refresh: 'POST',
+            plugin: 'GET',
+            pluginWithOwner: 'GET',
+    ]
+
     boolean refreshEnabled
 
     @Override
