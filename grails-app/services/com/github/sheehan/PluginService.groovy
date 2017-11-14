@@ -41,7 +41,8 @@ class PluginService implements GrailsConfigurationAware {
 
     @CompileDynamic
     Compare refreshPlugins() {
-        List<Map> plugins = bintrayService.fetchPackages().collect { Map data ->
+        List<Map> bintrayPackages = bintrayService.fetchPackages()
+        List<Map> plugins = bintrayPackages.collect { Map data ->
             if (data.vcs_url) {
                 def matcher = data.vcs_url =~ /.*github\.com\/([^\/]+\/[^\/\.]+).*/
                 if (matcher.matches()) {
@@ -52,8 +53,6 @@ class PluginService implements GrailsConfigurationAware {
                     }
                 }
             }
-            log.info 'Fetching README of {}', data.name
-            data.readmeHTML = renderPluginReadme(data)
             data
         }
 
@@ -62,6 +61,18 @@ class PluginService implements GrailsConfigurationAware {
 
         compare
     }
+
+    void refreshReadmeHTML() {
+        for (Map data : Plugins.get() ) {
+            log.info 'Fetching README of {}', data.name
+            String readmeHTML = renderPluginReadme(data)
+            if ( readmeHTML != null ) {
+                Plugins.setReadmeHTML(data.name as String, readmeHTML)
+            }
+
+        }
+    }
+
 
     @CompileDynamic
     List<Map> filterPluginsByQuery(String query, List<Map> plugins) {

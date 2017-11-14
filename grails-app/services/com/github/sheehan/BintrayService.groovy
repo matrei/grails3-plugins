@@ -41,6 +41,7 @@ class BintrayService implements GrailsConfigurationAware {
                 packages.addAll resp.data
                 
             } catch ( HttpResponseException e) {
+                log.error(e.message)
                 break
             }
 

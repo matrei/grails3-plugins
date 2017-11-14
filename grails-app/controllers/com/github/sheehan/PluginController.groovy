@@ -43,6 +43,7 @@ class PluginController implements GrailsConfigurationAware {
             return
         }
         pluginService.refreshPlugins()
+        pluginService.refreshReadmeHTML()
         redirect action: 'index'
     }
 
