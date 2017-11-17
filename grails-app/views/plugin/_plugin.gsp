@@ -16,7 +16,7 @@
     <span> <g:message code="plugin.published.label" default="published"/> </span>
     <grailsplugins:lastUpdated plugin="${plugin}"/>
     <span> <g:message code="plugin.by.label" default="by"/> </span>
-    <g:link uri="/q/owner:${plugin.owner}">${plugin.owner}</g:link>
+    <g:link absolute="true" uri="/q/owner:${plugin.owner}">${plugin.owner}</g:link>
 </p>
 <g:render template="pluginlabels" model="[plugin: plugin]"/>
 <g:render template="githubstar" model="[plugin: plugin]"/>

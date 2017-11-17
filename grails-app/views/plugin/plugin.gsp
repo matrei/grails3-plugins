@@ -29,7 +29,7 @@ dependencies {
             <h1 style="font-size: 25px;">${plugin.name}</h1>
             <ul style="list-style-type: none;padding-left: 0;">
                 <li><g:render template="githubstar" model="[plugin: plugin]"/></li>
-                <li><b><g:message code="plugin.owner" default="Owner"/></b> <g:link uri="q/owner:${plugin.owner}">${plugin.owner}</g:link></li>
+                <li><b><g:message code="plugin.owner" default="Owner"/></b> <g:link absolute="true" uri="/q/owner:${plugin.owner}">${plugin.owner}</g:link></li>
                 <g:if test="${plugin.licenses}">
                     <li><b><g:message code="plugin.license" default="License"/></b> <a href="https://opensource.org/licenses/${plugin.licenses[0]}">${plugin.licenses[0]}</a></li>
                 </g:if>
