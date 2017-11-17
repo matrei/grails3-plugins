@@ -7,12 +7,7 @@
 <body class="grails3plugins">
 <content tag="title">plugin</content>
 <article class="post" style="padding: 4%;">
-    <div class="align_right" style="margin-top: -17px;margin-bottom: 20px;">
 
-    </div>
-    <div class="align_left">
-    <h1 style="font-size: 25px;">${plugin.name}</h1>
-    </div>
 
 
     <div class="goldenratio" style="clear: both;">
@@ -23,14 +18,16 @@
 
             <p><b>${plugin.latest_version}</b> published <grailsplugins:lastUpdated plugin="${plugin}"/>
             <pre>
-                <code>dependencies {
-                compile '${plugin.system_ids[0]}:${plugin.latest_version}'
-                }
-                </code>
+<code>
+dependencies {
+    compile '${plugin.system_ids[0]}:${plugin.latest_version}'
+}
+</code>
             </pre>
         </div>
         <div class="column">
-            <ul style="list-style-type: none;">
+            <h1 style="font-size: 25px;">${plugin.name}</h1>
+            <ul style="list-style-type: none;padding-left: 0;">
                 <li><g:render template="githubstar" model="[plugin: plugin]"/></li>
                 <li><b><g:message code="plugin.owner" default="Owner"/></b> <a href="q/owner:${plugin.owner}">${plugin.owner}</a></li>
                 <g:if test="${plugin.licenses}">

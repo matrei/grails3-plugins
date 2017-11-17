@@ -9,7 +9,7 @@
     <g:layoutHead/>
 </head>
 <body class='grails3plugins'>
-<grailsnavigation:mainHeader active="${pageProperty(name:'page.title') == 'plugins' ? true : false}"/>
+<grailsnavigation:mainHeader active="${pageProperty(name:'page.title') == 'plugins' ? true : false}" page="plugins"/>
 <div class='content'>
     <g:layoutBody/>
 </div>
