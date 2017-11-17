@@ -104,7 +104,7 @@ class PluginService implements GrailsConfigurationAware {
             plugins = filterPluginsByQuery(query, plugins)
         }
 
-        log.info "Plugins: #{}", plugins.size()
+        log.debug "Plugins: #{}", plugins.size()
 
         plugins
     }
