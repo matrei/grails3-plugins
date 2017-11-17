@@ -90,8 +90,10 @@ class PluginService implements GrailsConfigurationAware {
             }
 
             return plugins.findAll { Map plugin ->
+                (plugin.name && plugin.name.replaceAll('-', ' ').toLowerCase().contains(query.toLowerCase())) ||
                 (plugin.name && plugin.name.toLowerCase().contains(query.toLowerCase())) ||
-                (plugin.desc && plugin.desc.toLowerCase().contains(query.toLowerCase()))
+                (plugin.desc && plugin.desc.toLowerCase().contains(query.toLowerCase())) ||
+                (plugin.labels.any { String label -> label.toLowerCase().contains(query.toLowerCase()) })
             }
         }
         plugins
