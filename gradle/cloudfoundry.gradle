@@ -6,5 +6,5 @@ cloudfoundry {
     application = "grails3-plugins"
     space = "plugins"
     file = file("$buildDir/libs/grails3-plugins-${version}.war")
-    uri = 'http://plugins.grails.org'
+    uris = ['http://plugins.grails.org', ' https://grailsplugins.cfapps.io']
 }
