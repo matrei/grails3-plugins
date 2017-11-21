@@ -1,6 +1,6 @@
 <ul class="iconlinks">
-    <li><a href="https://bintray.com/${plugin.owner}/${plugin.name}"><asset:image src="bintray.svg" width="20"/></a></li>
-<li><a href="https://github.com/${plugin.owner}/${plugin.name}"><asset:image src="small_github.svg" width="20"/></a></li>
+    <li><a href="${grailsplugins.bintrayLink(plugin: plugin)}"><asset:image src="bintray.svg" width="20"/></a></li>
+<li><a href="${plugin.vcs_url}"><asset:image src="small_github.svg" width="20"/></a></li>
 </ul>
 <h3>
     <g:if test="${plugin.owner}">
