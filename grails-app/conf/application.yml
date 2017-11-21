@@ -159,7 +159,7 @@ com:
 environments:
     development:
         grails:
-            serverURL: localhost:8080
+            serverURL: http://localhost:8080
     production:
         grails:
             serverURL: http://plugins.grails.org
