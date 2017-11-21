@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>${plugin.name}</title>
     <meta name="layout" content="main" />
 </head>
 <body class="grails3plugins">
