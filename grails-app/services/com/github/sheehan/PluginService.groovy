@@ -32,11 +32,13 @@ class PluginService implements GrailsConfigurationAware {
 
     int numberOfLatestGuides
     int numberOfTopRatedGuides
+    List<String> blacklist
 
     @Override
     void setConfiguration(Config co) {
         numberOfLatestGuides = co.getProperty('grails.plugins.latestGuides.max', Integer, 5)
         numberOfTopRatedGuides = co.getProperty('grails.plugins.topRated.max', Integer, 5)
+        blacklist = co.getProperty('grails.plugins.blacklist', List, [])
     }
 
     @CompileDynamic
@@ -107,8 +109,7 @@ class PluginService implements GrailsConfigurationAware {
         }
 
         log.debug "Plugins: #{}", plugins.size()
-
-        plugins
+        plugins.findAll { Map plugin -> !blacklist.contains(plugin.name ) }
     }
 
     Map findByOwnerNameAndPluginName(String ownerName, String pluginName) {
