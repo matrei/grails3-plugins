@@ -40,16 +40,7 @@ class GrailsPluginsServiceSpec extends Specification implements ServiceUnitTest<
 
         then:
         new PollingConditions(timeout: 10).eventually {
-            GrailsPlugin plugin = service.grailsPluginsRepository.findAll().find { GrailsPlugin plugin ->
-                plugin.bintrayPackage?.vcsUrl == 'https://github.com/rvanderwerf/grails-alexa-skills'
-            } as GrailsPlugin
-            assert plugin
-            assert plugin.readme != null
-         //   assert plugin.githubRepository != null
-        }
-        and:
-        new PollingConditions(timeout: 10).eventually {
-            assert service.grailsPluginsRepository.count() > 200
+            assert service.grailsPluginsRepository.count() >= 232
         }
     }
 
