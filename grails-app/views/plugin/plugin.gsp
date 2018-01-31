@@ -1,54 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>${plugin.name} | Plugins | Grails Framework</title>
+    <title>${plugin.bintrayPackage?.name} | Plugins | Grails Framework</title>
     <meta name="layout" content="main" />
 </head>
 <body class="grails3plugins">
+
+<div class="headerbar">
+    <div class="content">
+        <h1>${plugin.bintrayPackage?.name}</h1>
+    </div>
+</div>
+
+
 <content tag="title">plugin</content>
 <article class="post" style="padding: 4%;">
+    <p>${plugin.bintrayPackage?.desc}</p>
+    <p>
+    <g:message code="plugin.owner" default="Owner"/>:</b> <g:link absolute="true" uri="/q/owner:${plugin.bintrayPackage?.owner}">${plugin.bintrayPackage?.owner}</g:link>
+    <span> | </span>${plugin.bintrayPackage?.latestVersion}</b>
+    <span> | </span><grailsplugins:lastUpdated plugin="${plugin}"/>
+    <span> | </span><a href="${grailsplugins.bintrayLink(plugin: plugin)}">Package</a>
+    <g:if test="${plugin.bintrayPackage?.issueTrackerUrl}">
+        <span> | </span> <a href="${plugin.bintrayPackage?.issueTrackerUrl}">Issues</a>
+    </g:if>
+    <g:if test="${plugin.bintrayPackage?.vcsUrl}">
+        <span> | </span> <a href="${plugin.bintrayPackage?.vcsUrl}">Source</a>
+    </g:if>
+    <g:if test="${plugin.githubRepository.hasPages}">
+        <span> | </span><a href="${grailsplugins.githubpageUrl(githubRepository: plugin.githubRepository)}">Documentation</a>
+    </g:if>
+    <g:if test="${plugin.bintrayPackage?.licenses}">
+        <span> | </span><b><g:message code="plugin.license" default="License"/>:</b> <a href="https://opensource.org/licenses/${plugin.bintrayPackage?.licenses[0]}">${plugin.bintrayPackage?.licenses[0]}</a></li>
+    </g:if>
+    </p>
+    <div>
+        <div class="align-left" style="margin-top: 3px;margin-bottom: 10px;"><g:render template="githubstar" model="[plugin: plugin]"/></div>
+
+        <div class="align-left"><g:render template="pluginlabels" model="[plugin: plugin]"/></div>
+    </div>
 
 
-
-    <div class="goldenratio" style="clear: both;">
-        <div class="column">
-            <g:render template="pluginlabels" model="[plugin: plugin]"/>
-
-            <p>${plugin.desc}</p>
-
-            <p><b>${plugin.latest_version}</b> published <grailsplugins:lastUpdated plugin="${plugin}"/>
+    <div style="clear: both;">
             <pre>
 <code>
 dependencies {
-    compile '${plugin.system_ids[0]}:${plugin.latest_version}'
+    compile '${plugin.bintrayPackage?.systemIds?.getAt(0)}:${plugin.bintrayPackage?.latest_version}'
 }
 </code>
             </pre>
         </div>
-        <div class="column">
-            <h1 style="font-size: 25px;">${plugin.name}</h1>
-            <ul style="list-style-type: none;padding-left: 0;">
-                <li><g:render template="githubstar" model="[plugin: plugin]"/></li>
-                <li><b><g:message code="plugin.owner" default="Owner"/></b> <g:link absolute="true" uri="/q/owner:${plugin.owner}">${plugin.owner}</g:link></li>
-                <g:if test="${plugin.licenses}">
-                    <li><b><g:message code="plugin.license" default="License"/></b> <a href="https://opensource.org/licenses/${plugin.licenses[0]}">${plugin.licenses[0]}</a></li>
-                </g:if>
-                <li><asset:image src="bintray.svg" alt="bintray" width="15"/> <a href="${grailsplugins.bintrayLink(plugin: plugin)}">Package</a></li>
-                <g:if test="${plugin.issue_tracker_url}">
-                    <li><asset:image src="bug.svg" alt="Bug" width="15"/> <a href="${plugin.issue_tracker_url}">Issues</a></li>
-                </g:if>
-                <g:if test="${plugin.vcs_url}">
-                    <li><asset:image src="source.svg" alt="Source" width="15"/> <a href="${plugin.vcs_url}">Source</a></li>
-                </g:if>
-            </ul>
 
-        </div>
-    </div>
 
-    <g:if test="${plugin.readmeHTML}">
+    <g:if test="${plugin.readme}">
         <div style="clear: both;">
         <hr/>
-        <div class="readme">${raw(plugin.readmeHTML)}</div>
+        <div class="readme">${raw(plugin.readme)}</div>
         </div>
     </g:if>
 

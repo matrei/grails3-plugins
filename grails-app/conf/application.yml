@@ -50,7 +50,7 @@ environments:
 grails:
     profile: web
     codegen:
-        defaultPackage: com.github.sheehan
+        defaultPackage: grailsplugins
     spring:
         transactionManagement:
             proxies: false
@@ -139,12 +139,6 @@ grails:
     assets:
         babel:
             enabled: true
----
-com:
-    objectcomputing:
-        training:
-            refresh:
-                enabled: true
 ---
 grails:
     cors:

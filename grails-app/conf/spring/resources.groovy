@@ -1,3 +1,5 @@
-// Place your Spring DSL code here
+import grailsplugins.GrailsPluginsRepositoryService
+
 beans = {
+    grailsPluginsRepository(GrailsPluginsRepositoryService)
 }

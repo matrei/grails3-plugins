@@ -1,0 +1,10 @@
+project.afterEvaluate {
+    for (Task task : project.getTasks()) {
+        if (task instanceof JavaExec) {
+            String xRebelLocation = System.getProperty('XREBEL_LOCATION')
+            if ( xRebelLocation && new File(xRebelLocation).exists() ) {
+                (task as JavaExec).jvmArgs "-javaagent:$xRebelLocation"
+            }
+        }
+    }
+}

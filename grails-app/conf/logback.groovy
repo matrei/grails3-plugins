@@ -20,7 +20,8 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
 }
 root(ERROR, ['STDOUT'])
-logger('com.github.sheehan', INFO, ['STDOUT'], false)
-
+logger('com.github', DEBUG, ['STDOUT'], false)
+logger('com.bintray', DEBUG, ['STDOUT'], false)
+logger('grailsplugins', DEBUG, ['STDOUT'], false)
 
 

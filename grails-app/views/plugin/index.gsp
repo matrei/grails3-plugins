@@ -39,9 +39,9 @@
                 <ul>
                 <g:each var="plugin" in="${latestPlugins}">
                     <li>
-                    <b>${plugin.name} </b>
+                    <b>${plugin.bintrayPackage?.name} </b>
                     <span><grailsplugins:lastUpdated plugin="${plugin}"/></span>
-                    <a href="plugin/${plugin.owner}/${plugin.name}">Read More</a>
+                        <g:render template="pluginlink" model="[plugin: plugin, text: 'Read More']"/>
                     </li>
                 </g:each>
                 </ul>
@@ -51,9 +51,9 @@
                 <ul>
                     <g:each var="plugin" in="${topRatedPlugins}">
                         <li>
-                            <b>${plugin.name} </b>
-                            <span><asset:image src="small_githubstar.svg" alt="Github"/> ${plugin.githubRepo?.stargazers_count}</span>
-                            <a href="plugin/${plugin.owner}/${plugin.name}">Read More</a>
+                            <b>${plugin.bintrayPackage?.name} </b>
+                            <span><asset:image src="small_githubstar.svg" alt="Github"/> ${plugin.githubRepository?.stargazersCount}</span>
+                            <g:render template="pluginlink" model="[plugin: plugin, text: 'Read More']"/>
                         </li>
                     </g:each>
                 </ul>
