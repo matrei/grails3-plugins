@@ -67,7 +67,6 @@ class GrailsPluginsService implements GrailsConfigurationAware {
                     String previousVersion = grailsPluginsRepository.findPreviousLatestVersion(key)
 
                     if ( previousVersion &&
-                         !GrailsVersion.build(bintrayPackage.latestVersion).isSnapshot() &&
                          isThereANewVersion(bintrayPackage, previousVersion) ) {
                         tweetAboutNewVersion(bintrayPackage)
                     }
@@ -84,12 +83,25 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     }
 
     boolean isThereANewVersion(BintrayPackage bintrayPackage, String previousVersion) {
-        if ( previousVersion == null ) {
+        if ( !previousVersion ) {
             return false
         }
-        GrailsVersion previousSoftwareVersion = GrailsVersion.build(previousVersion)
-        GrailsVersion softwareVersion = GrailsVersion.build(bintrayPackage.latestVersion)
-        softwareVersion.compareTo(previousSoftwareVersion) as boolean
+        try {
+            GrailsVersion previousSoftwareVersion = GrailsVersion.build(previousVersion)
+            GrailsVersion softwareVersion = GrailsVersion.build(bintrayPackage.latestVersion)
+            if ( !softwareVersion || !previousSoftwareVersion || softwareVersion.isSnapshot() ) {
+                return false
+            }
+            return softwareVersion.compareTo(previousSoftwareVersion) as boolean
+
+        } catch(NumberFormatException e) {
+
+            if ( previousVersion && bintrayPackage.latestVersion && previousVersion != bintrayPackage.latestVersion ) {
+                return true
+            }
+
+        }
+        false
     }
 
     void fetchGithubReadme(BintrayKey key) {
