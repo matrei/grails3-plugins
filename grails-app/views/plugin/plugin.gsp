@@ -27,7 +27,7 @@
     <g:if test="${plugin.bintrayPackage?.vcsUrl}">
         <span> | </span> <a href="${plugin.bintrayPackage?.vcsUrl}">Source</a>
     </g:if>
-    <g:if test="${plugin.githubRepository.hasPages}">
+    <g:if test="${plugin.githubRepository?.hasPages}">
         <span> | </span><a href="${grailsplugins.githubpageUrl(githubRepository: plugin.githubRepository)}">Documentation</a>
     </g:if>
     <g:if test="${plugin.bintrayPackage?.licenses}">
