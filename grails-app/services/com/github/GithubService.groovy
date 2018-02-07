@@ -1,6 +1,5 @@
 package com.github
 
-import com.github.GithubRepository
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import grails.config.Config
@@ -61,6 +60,13 @@ class GithubService implements GrailsConfigurationAware {
                 .header("User-Agent", userAgent)
                 .build()
         Response response = client.newCall(request).execute()
-        response.isSuccessful() ? githubRepositoryJsonAdapter.fromJson(response.body().source()) : null
+        GithubRepository githubRepository
+        if ( response.isSuccessful() ) {
+            githubRepository = githubRepositoryJsonAdapter.fromJson(response.body().source())
+        } else {
+            log.warn 'Response {}. Could not fetch github repository at {}', response.code(), vcsUrl
+        }
+        response.close()
+        githubRepository
     }
 }

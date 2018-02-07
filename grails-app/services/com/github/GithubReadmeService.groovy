@@ -1,11 +1,13 @@
 package com.github
 
 import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 
+@Slf4j
 @CompileStatic
 class GithubReadmeService {
     private final String rawGithubUserContentUrl = 'https://raw.githubusercontent.com'
@@ -28,6 +30,8 @@ class GithubReadmeService {
         String str
         if ( response.isSuccessful() ) {
             str = response.body().string()
+        } else {
+            log.warn 'Response {}. Could not fetch README {}', response.code(), url
         }
         response.close()
         str

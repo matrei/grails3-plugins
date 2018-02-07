@@ -51,6 +51,8 @@ class BintrayService implements GrailsConfigurationAware {
         BintrayPackage bintrayPackage
         if ( response.isSuccessful() ) {
             bintrayPackage = bintrayPackageJsonAdapter.fromJson(response.body().source())
+        } else {
+            log.warn 'Response {}. Could not fetch bintray package at {}', response.code(), name
         }
         response.close()
         return bintrayPackage
@@ -86,6 +88,8 @@ class BintrayService implements GrailsConfigurationAware {
                     end: endPositionHeader(headers),
                     total: totalHeader(headers),
                     bintrayPackageList: bintrayPackageList)
+        } else {
+            log.warn 'Response {}. Could not fectch bintray packages at {}', response.code(), startPos
         }
         response.close()
         rsp
