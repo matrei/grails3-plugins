@@ -8,6 +8,7 @@ import groovy.transform.CompileStatic
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import groovy.transform.Synchronized
 
 @CompileStatic
 class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsConfigurationAware {
@@ -26,10 +27,12 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
     Map<BintrayKey, GrailsPlugin> grailsPlugins = [:]
     Map<BintrayKey, String> versions = [:]
 
+    @Synchronized
     void clear() {
         grailsPlugins.clear()
     }
 
+    @Synchronized
     @Override
     BintrayKey save(BintrayPackage bintrayPackage) {
         BintrayKey key = BintrayKey.of(bintrayPackage)
@@ -39,12 +42,14 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
         key
     }
 
+    @Synchronized
     @Override
     BintrayKey updateGithubRepository(BintrayKey key, GithubRepository githubRepository) {
         grailsPlugins[key]?.githubRepository = githubRepository
         key
     }
 
+    @Synchronized
     @Override
     BintrayKey updateGithubRepositoryReadme(BintrayKey key, String readme) {
         grailsPlugins[key]?.readme = readme
