@@ -9,4 +9,5 @@ class GrailsPlugin {
     BintrayPackage bintrayPackage
     GithubRepository githubRepository
     String readme
+    Date lastUpdated
 }

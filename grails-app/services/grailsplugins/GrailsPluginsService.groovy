@@ -10,6 +10,8 @@ import com.github.GithubService
 import com.twitter.TwitterService
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
+import groovy.time.TimeCategory
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.grails.model.GrailsVersion
@@ -35,20 +37,35 @@ class GrailsPluginsService implements GrailsConfigurationAware {
         blacklist = co.getProperty('grails.plugins.blacklist', List, [])
     }
 
+    @CompileDynamic
+    Date oneDayAgo() {
+        Date now = new Date()
+        use(TimeCategory) {
+            now -= 1.day
+        }
+        now
+    }
 
     void refresh() {
-        grailsPluginsRepository.clear()
+        grailsPluginsRepository.clearNotUpdatedSince(oneDayAgo())
         Integer startAt = 0
         BintrayPackageResponse rsp = bintrayService.fetchBintrayPackagesByStartPosition(startAt)
-        fetch(rsp)
-        List<Integer> positions = bintrayService.expectedExtraStarPositions(rsp.total, rsp.start, rsp.end)
-        positions.each { Integer start ->
-            task {
-                bintrayService.fetchBintrayPackagesByStartPosition(start)
-            }.onComplete { BintrayPackageResponse bintrayPackageResponse ->
-                fetch(bintrayPackageResponse)
+        if ( rsp != null ) {
+            log.info 'BintrayPackageResponse start: {} end: {} total: {}', rsp.start, rsp.end, rsp.total
+            fetch(rsp)
+            List<Integer> positions = bintrayService.expectedExtraStarPositions(rsp.total, rsp.start, rsp.end)
+            positions.each { Integer start ->
+                task {
+                    bintrayService.fetchBintrayPackagesByStartPosition(start)
+                }.onComplete { BintrayPackageResponse bintrayPackageResponse ->
+                    log.info 'BintrayPackageResponse start: {} end: {} total: {}', bintrayPackageResponse.start, bintrayPackageResponse.end, bintrayPackageResponse.total
+                    if ( bintrayPackageResponse != null ) {
+                        fetch(bintrayPackageResponse)
+                    }
+                }
             }
         }
+
     }
 
     void fetch(BintrayPackageResponse rsp) {

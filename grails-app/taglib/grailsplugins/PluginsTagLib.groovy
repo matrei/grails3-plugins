@@ -24,6 +24,8 @@ class PluginsTagLib {
                 out << DISPLAY.format(date)
             } catch ( ParseException e) {
                 log.error 'unable to parse updated {} for {}', grailsPlugin.bintrayPackage?.updated, grailsPlugin.bintrayPackage?.name
+            } catch ( NumberFormatException e ) {
+                log.error 'NumberFormatException {} for {}', grailsPlugin.bintrayPackage?.updated, grailsPlugin.bintrayPackage?.name
             }
         }
     }

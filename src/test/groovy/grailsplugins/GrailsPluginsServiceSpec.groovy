@@ -5,6 +5,7 @@ import com.bintray.BintrayService
 import com.github.GithubReadmeService
 import com.github.GithubService
 import grails.testing.services.ServiceUnitTest
+import groovy.time.TimeCategory
 import spock.lang.IgnoreIf
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -20,6 +21,17 @@ class GrailsPluginsServiceSpec extends Specification implements ServiceUnitTest<
         asciidocRenderService(AsciidocRenderService)
         markdownRenderService(MarkdownRenderService)
     }}
+
+    def "test oneDayAgoReturns a date older than 23 hours"() {
+        given:
+        Date d = new Date()
+        use(TimeCategory) {
+            d -= 23.hour
+        }
+
+        expect:
+        expect: service.oneDayAgo().before(d)
+    }
 
     @IgnoreIf({
         !System.getProperty('GP_BINTRAY_TOKEN') ||

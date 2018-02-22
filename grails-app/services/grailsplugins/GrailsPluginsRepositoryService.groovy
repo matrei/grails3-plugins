@@ -5,11 +5,12 @@ import com.github.GithubRepository
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
-
+import groovy.util.logging.Slf4j
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import groovy.transform.Synchronized
 
+@Slf4j
 @CompileStatic
 class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsConfigurationAware {
 
@@ -27,9 +28,21 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
     Map<BintrayKey, GrailsPlugin> grailsPlugins = [:]
     Map<BintrayKey, String> versions = [:]
 
+    @Override
     @Synchronized
-    void clear() {
-        grailsPlugins.clear()
+    void clearNotUpdatedSince(Date oneDayAgo) {
+        Set<BintrayKey> keysToBeRemoved = []
+        for ( BintrayKey key : grailsPlugins.keySet() ) {
+            GrailsPlugin grailsPlugin = grailsPlugins[key]
+            if ( grailsPlugin.lastUpdated && grailsPlugin.lastUpdated.before(oneDayAgo) ) {
+                keysToBeRemoved << key
+            }
+        }
+        log.info('removing #{}',"${keysToBeRemoved.size()}".toString())
+        for ( BintrayKey key : keysToBeRemoved ) {
+            grailsPlugins.remove(key)
+            versions.remove(key)
+        }
     }
 
     @Synchronized
@@ -37,8 +50,10 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
     BintrayKey save(BintrayPackage bintrayPackage) {
         BintrayKey key = BintrayKey.of(bintrayPackage)
         GrailsPlugin grailsPlugin = new GrailsPlugin(bintrayPackage: bintrayPackage)
+        grailsPlugin.lastUpdated = new Date()
         grailsPlugins.put(key, grailsPlugin)
         versions[key] = bintrayPackage.latestVersion
+
         key
     }
 

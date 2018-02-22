@@ -11,11 +11,11 @@ interface GrailsPluginsRepository {
     BintrayKey updateGithubRepositoryReadme(BintrayKey key, String readme)
     GrailsPlugin find(BintrayKey key)
     int count()
-    void clear()
     List<GrailsPlugin> topRatedPlugins()
     List<GrailsPlugin> latestPlugins()
     List<GrailsPlugin> findAll()
     List<GrailsPlugin> findByQuery(String query)
     GrailsPlugin findByPluginName(String name)
     String findPreviousLatestVersion(BintrayKey key)
+    void clearNotUpdatedSince(Date date)
 }
