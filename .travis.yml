@@ -3,8 +3,8 @@ cache:
   directories:
   - "$HOME/.gradle"
 jdk:
-- oraclejdk8
-before_script: 
+- openjdk8
+before_script:
 script: "./travis-build.sh"
 env:
   global:
