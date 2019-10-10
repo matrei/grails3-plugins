@@ -6,13 +6,13 @@
     <asset:stylesheet src="screen.css"/>
     <asset:javascript src="navigation.js"/>
 
-    <title><g:layoutTitle default="Grails 3 Plugins"/></title>
+    <title><g:layoutTitle default="Grails Plugins"/></title>
 
     <g:if test="${plugin instanceof Map}">
         <meta name="description" content="${plugin.desc}" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="${asset.assetPath(src: 'grails-logo-light.png', absolute: true)}" />
-        <meta property="og:site_name" content="Grails 3 Plugin Portal">
+        <meta property="og:site_name" content="Grails Plugin Portal">
         <meta property="og:title" content="${plugin.name}" />
         <meta property="og:description" content="${plugin.desc}" />
         <meta name="twitter:title" value="${plugin.name}" />
@@ -29,8 +29,8 @@
         </g:if>
     </g:if>
     <g:else>
-        <g:set var="name" value="Grails 3 Plugin Portal" />
-        <g:set var="description" value="A portal for searching Grails 3 plugins!" />
+        <g:set var="name" value="Grails Plugin Portal" />
+        <g:set var="description" value="A portal for searching Grails plugins!" />
         <meta name="description" content="${description}" />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="${asset.assetPath(src: 'grails-logo-light.png', absolute: true)}" />
