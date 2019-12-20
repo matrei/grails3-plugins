@@ -6,7 +6,7 @@ buildscript {
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
-        classpath 'org.cloudfoundry:cf-gradle-plugin:1.1.3'
+        classpath "gradle.plugin.com.github.pivotalservices:ya-cf-app-gradle-plugin:2.3.0-rc.8"
     }
 }
 
@@ -19,7 +19,7 @@ apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin: "com.bertramlabs.asset-pipeline"
-apply from: 'gradle/cloudfoundry.gradle'
+apply plugin: "com.github.pivotalservices.cf-app"
 
 repositories {
     mavenLocal()
@@ -98,4 +98,14 @@ task stage() {
 
 test {
     systemProperties System.properties
+}
+
+
+cfConfig {
+    ccHost = "api.run.pivotal.io"
+    org = "grails-org"
+    name = "grails3-plugins"
+    space = "plugins"
+    filePath = "$buildDir/libs/grails3-plugins-${version}.war"
+    routes = ['plugins.grails.org']
 }
