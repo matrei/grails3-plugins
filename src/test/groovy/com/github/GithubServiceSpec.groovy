@@ -21,13 +21,16 @@ class GithubServiceSpec extends Specification implements ServiceUnitTest<GithubS
         null                                                 | null
     }
 
-    @IgnoreIf({!System.getProperty('GP_GITHUB_TOKEN') || !System.getProperty('GP_GITHUB_USERNAME') })
+    @IgnoreIf({
+        !(System.getProperty('GP_GITHUB_TOKEN') || System.getenv('GP_GITHUB_TOKEN')) ||
+        !(System.getProperty('GP_GITHUB_USERNAME') || System.getenv('GP_GITHUB_USERNAME'))
+    })
     def "fetchGithubRepository returns object"() {
         given:
         PollingConditions conditions = new PollingConditions(timeout: 10)
 
-        service.username = System.getProperty('GP_GITHUB_USERNAME')
-        service.token = System.getProperty('GP_GITHUB_TOKEN')
+        service.username = System.getProperty('GP_GITHUB_USERNAME')?: System.getenv('GP_GITHUB_USERNAME')
+        service.token = System.getProperty('GP_GITHUB_TOKEN')?: System.getenv('GP_GITHUB_TOKEN')
 
         when:
         GithubRepository repository = service.fetchGithubRepository('https://github.com/rvanderwerf/grails-alexa-skills')

@@ -34,18 +34,18 @@ class GrailsPluginsServiceSpec extends Specification implements ServiceUnitTest<
     }
 
     @IgnoreIf({
-        !System.getProperty('GP_BINTRAY_TOKEN') ||
-        !System.getProperty('GP_BINTRAY_USERNAME') ||
-        !System.getProperty('GP_GITHUB_TOKEN') ||
-        !System.getProperty('GP_GITHUB_USERNAME')
+        !(System.getProperty('GP_BINTRAY_TOKEN') || System.getenv('GP_BINTRAY_TOKEN')) ||
+        !(System.getProperty('GP_BINTRAY_USERNAME') || System.getenv('GP_BINTRAY_USERNAME')) ||
+        !(System.getProperty('GP_GITHUB_TOKEN') || System.getenv('GP_GITHUB_TOKEN')) ||
+        !(System.getProperty('GP_GITHUB_USERNAME') || System.getenv('GP_GITHUB_USERNAME'))
     })
     def "test fetchBintrayPackages"() {
         given:
-        service.bintrayService.token = System.getProperty('GP_BINTRAY_TOKEN')
-        service.bintrayService.username = System.getProperty('GP_BINTRAY_USERNAME')
+        service.bintrayService.token = System.getProperty('GP_BINTRAY_TOKEN') ?: System.getenv('GP_BINTRAY_TOKEN')
+        service.bintrayService.username = System.getProperty('GP_BINTRAY_USERNAME')?: System.getenv('GP_BINTRAY_USERNAME')
 
-        service.githubService.username = System.getProperty('GP_GITHUB_USERNAME')
-        service.githubService.token = System.getProperty('GP_GITHUB_TOKEN')
+        service.githubService.username = System.getProperty('GP_GITHUB_USERNAME')?: System.getenv('GP_GITHUB_USERNAME')
+        service.githubService.token = System.getProperty('GP_GITHUB_TOKEN')?: System.getenv('GP_GITHUB_TOKEN')
 
         when:
         service.refresh()
