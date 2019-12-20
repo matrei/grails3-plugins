@@ -2,7 +2,9 @@ package grailsplugins
 
 import grails.config.Config
 import grails.core.support.GrailsConfigurationAware
+import groovy.transform.CompileStatic
 
+@CompileStatic
 class PluginController implements GrailsConfigurationAware {
 
     static allowedMethods = [
