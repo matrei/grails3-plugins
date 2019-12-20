@@ -68,7 +68,7 @@ class BintrayService implements GrailsConfigurationAware {
                     total: totalHeader(response.headers),
                     bintrayPackageList: bintrayPackageList)
         } catch(HttpClientResponseException e) {
-            log.warn 'Response {}. Could not fectch bintray packages at {}', response.status.code, startPos
+            log.warn 'Response {}. Could not fetch bintray packages at {}', response.status.code, startPos
 
         }
     }
