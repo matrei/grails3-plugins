@@ -68,7 +68,6 @@ dependencies {
     testCompile "org.grails:grails-web-testing-support"
 
 
-    compile "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
     compile 'org.twitter4j:twitter4j-core:4.0.7'
     compile "com.vladsch.flexmark:flexmark-all:$flexmarkVersion"
     compile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
@@ -87,6 +86,8 @@ bootRun {
 }
 
 assets {
+    packagePlugin = true
+    includes = ["fonts/*"]
     minifyJs = true
     minifyCss = true
 }
