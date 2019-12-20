@@ -11,6 +11,8 @@ info:
 spring:
     jmx:
         unique-names: true
+    main:
+        banner-mode: "off"
     groovy:
         template:
             check-template-location: false
