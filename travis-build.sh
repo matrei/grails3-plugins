@@ -3,9 +3,7 @@ set -e
 
 export EXIT_STATUS=0
 
-rm -rf *.zip
-
-./gradlew clean check || EXIT_STATUS=$?
+./gradlew check || EXIT_STATUS=$?
 
 if [[ $EXIT_STATUS ]]; then
 
@@ -15,7 +13,7 @@ if [[ $EXIT_STATUS ]]; then
 
             echo "Publishing to PWS"
 
-            ./gradlew clean war || EXIT_STATUS=$?
+            ./gradlew assemble || EXIT_STATUS=$?
 
             if [[ $EXIT_STATUS ]]; then
                 ./gradlew cf-push || EXIT_STATUS=$?
