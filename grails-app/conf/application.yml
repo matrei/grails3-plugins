@@ -9,7 +9,8 @@ info:
         version: '@info.app.version@'
         grailsVersion: '@info.app.grailsVersion@'
 spring:
-
+    jmx:
+        unique-names: true
     groovy:
         template:
             check-template-location: false
@@ -75,9 +76,7 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
-endpoints:
-    jmx:
-        unique-names: true
+
 twitter:
     enabled: true
     consumerKey: ${GP_TWITTER_CONSUMER_KEY}
