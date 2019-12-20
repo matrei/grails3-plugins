@@ -14,7 +14,6 @@ import groovy.time.TimeCategory
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import org.grails.model.GrailsVersion
 
 import static grails.async.Promises.task
 
@@ -104,8 +103,8 @@ class GrailsPluginsService implements GrailsConfigurationAware {
             return false
         }
         try {
-            GrailsVersion previousSoftwareVersion = GrailsVersion.build(previousVersion)
-            GrailsVersion softwareVersion = GrailsVersion.build(bintrayPackage.latestVersion)
+            SoftwareVersion previousSoftwareVersion = SoftwareVersion.build(previousVersion)
+            SoftwareVersion softwareVersion = SoftwareVersion.build(bintrayPackage.latestVersion)
             if ( !softwareVersion || !previousSoftwareVersion || softwareVersion.isSnapshot() ) {
                 return false
             }
