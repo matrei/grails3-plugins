@@ -30,8 +30,16 @@ repositories {
     maven { url 'http://dl.bintray.com/grails/plugins' }
 }
 
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
 dependencies {
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:$assetPipelineVersion"
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
     compile "org.grails:grails-core"
