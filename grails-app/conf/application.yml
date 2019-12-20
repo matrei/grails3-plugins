@@ -19,6 +19,15 @@ spring:
 
 ---
 grails:
+    plugins:
+        blacklist:
+            - grails-navigation-core
+            - grails-navigation
+    assets:
+        babel:
+            enabled: true
+        cors:
+            enabled: true
     mime:
         disable:
             accept:
@@ -85,15 +94,6 @@ bintray:
     username: ${GP_BINTRAY_USERNAME}
     token: ${GP_BINTRAY_TOKEN}
 ---
-grails:
-    assets:
-        babel:
-            enabled: true
----
-grails:
-    cors:
-        enabled: true
----
 com:
     grails:
         plugins:
@@ -107,9 +107,3 @@ environments:
     production:
         grails:
             serverURL: http://plugins.grails.org
----
-grails:
-    plugins:
-        blacklist:
-            - grails-navigation-core
-            - grails-navigation
