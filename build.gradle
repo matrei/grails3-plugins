@@ -74,8 +74,12 @@ apply from: "${rootProject.projectDir}/gradle/xrebel.gradle"
 
 bootRun {
     systemProperties System.properties
-    jvmArgs('-Dspring.output.ansi.enabled=always')
     addResources = true
+    jvmArgs(
+            '-Dspring.output.ansi.enabled=always',
+            '-noverify',
+            '-XX:TieredStopAtLevel=1',
+            '-Xmx1024m')
 }
 
 assets {
