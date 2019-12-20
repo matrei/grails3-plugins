@@ -84,8 +84,6 @@ github:
 bintray:
     username: ${GP_BINTRAY_USERNAME}
     token: ${GP_BINTRAY_TOKEN}
-quartz:
-    pluginEnabled: ${GP_QUARTZ_ENABLED}
 ---
 grails:
     assets:

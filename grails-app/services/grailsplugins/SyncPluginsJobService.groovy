@@ -1,27 +1,20 @@
 package grailsplugins
 
-import com.agileorbit.schwartz.SchwartzJob
-import com.twitter.TwitterService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import org.quartz.DisallowConcurrentExecution
-import org.quartz.JobExecutionContext
-import org.quartz.JobExecutionException
+import org.springframework.scheduling.annotation.Scheduled
 
-@DisallowConcurrentExecution
 @CompileStatic
 @Slf4j
-class SyncPluginsJobService implements SchwartzJob {
-	
+class SyncPluginsJobService {
+
+	static lazyInit = false
+
 	GrailsPluginsService grailsPluginsService
 
-	void execute(JobExecutionContext context) throws JobExecutionException {
+	@Scheduled(fixedRate = 3600000L, initialDelay = 1000L) // 1 hour, delay 1s
+	void execute() {
 		log.info 'Fetching latest plugin data'
-
 		grailsPluginsService.refresh()
-	}
-
-	void buildTriggers() {
-		triggers << factory('repeat every hour').intervalInHours(8).build()
 	}
 }
