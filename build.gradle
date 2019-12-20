@@ -57,6 +57,7 @@ dependencies {
     compile "org.grails.plugins:scaffolding"
     compile "org.grails.plugins:events"
     compile "org.grails.plugins:gsp"
+    compile "io.micronaut:micronaut-http-client"
 
     compileOnly "io.micronaut:micronaut-inject-groovy"
     console "org.grails:grails-console"
@@ -72,9 +73,6 @@ dependencies {
     compile "org.grails.plugins:grails-navigation:$grailsNavigationVersion"
     compile "com.vladsch.flexmark:flexmark-all:$flexmarkVersion"
     compile "org.asciidoctor:asciidoctorj:$asciidoctorjVersion"
-
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
-    compile 'com.squareup.moshi:moshi:1.5.0'
 }
 
 apply from: "${rootProject.projectDir}/gradle/xrebel.gradle"
