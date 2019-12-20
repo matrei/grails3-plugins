@@ -3,9 +3,6 @@ grails:
     profile: web
     codegen:
         defaultPackage: grailsplugins
-    spring:
-        transactionManagement:
-            proxies: false
 info:
     app:
         name: '@info.app.name@'
