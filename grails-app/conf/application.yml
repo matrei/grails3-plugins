@@ -107,3 +107,8 @@ environments:
     production:
         grails:
             serverURL: http://plugins.grails.org
+---
+micronaut:
+    http:
+        client:
+            read-timeout: 15s
