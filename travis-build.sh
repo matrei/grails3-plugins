@@ -18,8 +18,7 @@ if [[ $EXIT_STATUS ]]; then
             ./gradlew clean war || EXIT_STATUS=$?
 
             if [[ $EXIT_STATUS ]]; then
-
-                ./gradlew -PcfUsername=$CF_USERNAME -PcfPassword=$CF_PASSWORD cfPush || EXIT_STATUS=$i
+                ./gradlew cf-push || EXIT_STATUS=$?
             fi
         fi
     fi
