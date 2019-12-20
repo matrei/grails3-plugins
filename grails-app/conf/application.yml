@@ -18,7 +18,11 @@ spring:
             check-template-location: false
 management:
     endpoints:
-        enabled-by-default: false
+        enabled-by-default: true
+    info:
+        git:
+            enabled: true
+            mode: simple
 ---
 grails:
     plugins:
