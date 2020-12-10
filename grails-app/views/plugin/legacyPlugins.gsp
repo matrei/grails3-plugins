@@ -10,8 +10,8 @@
         <div class="column">
             <div class="plugins-list">
 
-                <p>The Grails 1 & 2 plugins portal has been deprecated and it doesn't allow to submit new plugins anymore.</p>
-                <p>If you need to find old plugins you can use your favorite search engine.</p>
+                <p>The Grails 1 & 2 plugin portal is no longer active.  We are not accepting submissions for new plugins for Grails 1 & 2.</p>
+                <p>Documentation for Grails 1 & 2 plugins can be found on the website or source code repository of each plugin.  If you require additional assitance, please visit the Grails <a href="https://grails.org/support.html">support page</a>.</p>
 
             </div>
         </div>
