@@ -12,11 +12,11 @@ class PluginController implements GrailsConfigurationAware {
             refresh: 'POST',
             plugin: 'GET',
             pluginWithOwner: 'GET',
+            legacyPlugins: 'GET'
     ]
 
     GrailsPluginsRepository grailsPluginsRepository
     GrailsPluginsService grailsPluginsService
-
 
     boolean refreshEnabled
 
@@ -41,6 +41,17 @@ class PluginController implements GrailsConfigurationAware {
                 pluginTotal: total,
                 topRatedPlugins: grailsPluginsRepository.topRatedPlugins(),
                 latestPlugins: grailsPluginsRepository.latestPlugins(),
+        ])
+    }
+
+    def legacyPlugins() {
+        List<GrailsPlugin> pluginList = grailsPluginsRepository.findAll()
+        render(view: 'legacyPlugins', model: [
+            pluginList: pluginList,
+            query: null,
+            pluginTotal: pluginList.size(),
+            topRatedPlugins: grailsPluginsRepository.topRatedPlugins(),
+            latestPlugins: grailsPluginsRepository.latestPlugins(),
         ])
     }
 

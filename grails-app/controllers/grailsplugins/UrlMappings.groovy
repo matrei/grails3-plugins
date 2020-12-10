@@ -4,6 +4,7 @@ class UrlMappings {
 
     static mappings = {
         "/"(controller: 'plugin', action: 'index')
+        "/legacy-plugins"(controller: 'plugin', action: 'legacyPlugins')
         "/plugin/json"(controller: 'plugin', action: 'json')
         "/plugin/refresh"(controller: 'plugin', action: 'refresh')
         "/plugin/$pluginName"(controller: 'plugin', action: 'plugin')
