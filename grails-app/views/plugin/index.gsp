@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main" />
+    <title>Grails Plugins</title>
 </head>
 <body class="grails3plugins">
 <content tag="title">plugins</content>

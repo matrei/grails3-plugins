@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main" />
+    <title>Legacy Grails Plugins</title>
 </head>
 <body class="grails3plugins">
 <content tag="title">plugins</content>
@@ -10,8 +11,8 @@
         <div class="column">
             <div class="plugins-list">
 
-                <p>The Grails 1 & 2 plugin portal is no longer active.  We are not accepting submissions for new plugins for Grails 1 & 2.</p>
-                <p>Documentation for Grails 1 & 2 plugins can be found on the website or source code repository of each plugin.  If you require additional assitance, please visit the Grails <a href="https://grails.org/support.html">support page</a>.</p>
+                <p><g:message code="grails.plugin.portal.inactive.1.message" /></p>
+                <p><g:message code="grails.plugin.portal.inactive.2.message" /> <a href="https://grails.org/support.html"><g:message code="grails.support.page.title" /></a>.</p>
 
             </div>
         </div>

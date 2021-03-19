@@ -17,22 +17,22 @@
 <article class="post" style="padding: 4%;">
     <p>${plugin.bintrayPackage?.desc}</p>
     <p>
-    <g:message code="plugin.owner" default="Owner"/>:</b> <g:link absolute="true" uri="/q/owner:${plugin.bintrayPackage?.owner}">${plugin.bintrayPackage?.owner}</g:link>
-    <span> | </span>${plugin.bintrayPackage?.latestVersion}</b>
-    <span> | </span><grailsplugins:lastUpdated plugin="${plugin}"/>
-    <span> | </span><a href="${grailsplugins.bintrayLink(plugin: plugin)}">Package</a>
-    <g:if test="${plugin.bintrayPackage?.issueTrackerUrl}">
-        <span> | </span> <a href="${plugin.bintrayPackage?.issueTrackerUrl}">Issues</a>
-    </g:if>
-    <g:if test="${plugin.bintrayPackage?.vcsUrl}">
-        <span> | </span> <a href="${plugin.bintrayPackage?.vcsUrl}">Source</a>
-    </g:if>
-    <g:if test="${plugin.githubRepository?.hasPages}">
-        <span> | </span><a href="${grailsplugins.githubpageUrl(githubRepository: plugin.githubRepository)}">Documentation</a>
-    </g:if>
-    <g:if test="${plugin.bintrayPackage?.licenses}">
-        <span> | </span><b><g:message code="plugin.license" default="License"/>:</b> <a href="https://opensource.org/licenses/${plugin.bintrayPackage?.licenses[0]}">${plugin.bintrayPackage?.licenses[0]}</a></li>
-    </g:if>
+        <b><g:message code="plugin.owner" default="Owner"/>:</b> <g:link absolute="true" uri="/q/owner:${plugin.bintrayPackage?.owner}">${plugin.bintrayPackage?.owner}</g:link>
+        <span> | </span><b>${plugin.bintrayPackage?.latestVersion}</b>
+        <span> | </span><grailsplugins:lastUpdated plugin="${plugin}"/>
+        <span> | </span><a href="${grailsplugins.bintrayLink(plugin: plugin)}">Package</a>
+        <g:if test="${plugin.bintrayPackage?.issueTrackerUrl}">
+            <span> | </span> <a href="${plugin.bintrayPackage?.issueTrackerUrl}">Issues</a>
+        </g:if>
+        <g:if test="${plugin.bintrayPackage?.vcsUrl}">
+            <span> | </span> <a href="${plugin.bintrayPackage?.vcsUrl}">Source</a>
+        </g:if>
+        <g:if test="${plugin.githubRepository?.hasPages}">
+            <span> | </span><a href="${grailsplugins.githubpageUrl(githubRepository: plugin.githubRepository)}">Documentation</a>
+        </g:if>
+        <g:if test="${plugin.bintrayPackage?.licenses}">
+            <span> | </span><b><g:message code="plugin.license" default="License"/>:</b> <a href="https://opensource.org/licenses/${plugin.bintrayPackage?.licenses[0]}">${plugin.bintrayPackage?.licenses[0]}</a>
+        </g:if>
     </p>
     <div>
         <div class="align-left" style="margin-top: 3px;margin-bottom: 10px;"><g:render template="githubstar" model="[plugin: plugin]"/></div>
