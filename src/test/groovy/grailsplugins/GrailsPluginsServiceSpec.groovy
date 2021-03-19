@@ -59,7 +59,7 @@ class GrailsPluginsServiceSpec extends Specification implements ServiceUnitTest<
     @Unroll
     def "#version #description #previousVersion"(String version, String previousVersion, boolean expected, String description) {
         expect:
-        expected == service.isThereANewVersion(new BintrayPackage(latest_version: version), previousVersion)
+        expected == service.isThereANewVersion(new BintrayPackage(latestVersion: version), previousVersion)
 
         where:
         version | previousVersion | expected
