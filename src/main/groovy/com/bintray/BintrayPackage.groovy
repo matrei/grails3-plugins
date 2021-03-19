@@ -36,4 +36,11 @@ class BintrayPackage {
         this.vcsUrl = vcsUrl
         this.githubSlug = GithubService.ownerAndRepo(vcsUrl)
     }
+
+    String getGithubSlug() {
+        if (!this.githubSlug) {
+            this.githubSlug = GithubService.ownerAndRepo(vcsUrl)
+        }
+        return this.githubSlug
+    }
 }

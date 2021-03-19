@@ -21,6 +21,7 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
 }
 root(ERROR, ['STDOUT'])
 logger('com.github', DEBUG, ['STDOUT'], false)
+//logger("io.micronaut.http.client", TRACE, ['STDOUT'], false)
 logger('com.bintray', DEBUG, ['STDOUT'], false)
 logger('grailsplugins', DEBUG, ['STDOUT'], false)
 

@@ -130,9 +130,10 @@ class GrailsPluginsService implements GrailsConfigurationAware {
 
     void fetchGithubReadme(BintrayKey key) {
         String vcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
-        if ( vcsUrl ) {
+        final String githubSlug = grailsPluginsRepository.find(key)?.bintrayPackage?.githubSlug
+        if ( vcsUrl && githubSlug ) {
             task {
-                githubReadmeService.fetchMarkdown(vcsUrl)
+                githubReadmeService.fetchMarkdown(githubSlug)
             }.onComplete { String markdown ->
                 if ( markdown ) {
                     task {
@@ -144,7 +145,7 @@ class GrailsPluginsService implements GrailsConfigurationAware {
                     }
                 } else {
                     task {
-                        githubReadmeService.fetchAsciidoc(vcsUrl)
+                        githubReadmeService.fetchAsciidoc(githubSlug)
                     }.onComplete { String asciidoc ->
                         if ( asciidoc ) {
                             task {

@@ -19,14 +19,17 @@ class GithubReadmeService {
     }
 
     String fetchAsciidoc(String githubSlug) {
-        fetchUrl("/${githubSlug}/master/README.adoc".toString())
+        String content = fetchUrl("/${githubSlug}/master/README.adoc".toString())
+        if (!content) {
+            fetchUrl("/${githubSlug}/master/README.asciidoc".toString())
+        }
     }
 
     private String fetchUrl(String url) {
         try {
             HttpResponse<String> response = client.exchange(HttpRequest.GET(url), String)
             log.debug("fetch README of {}", url)
-            return response.body
+            return response.body.get()
         } catch (HttpClientResponseException e) {
             log.warn 'Response {}. Could not fetch README {}', e.status.code, url
         }

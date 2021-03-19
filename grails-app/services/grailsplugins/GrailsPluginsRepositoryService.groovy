@@ -129,13 +129,11 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
             }
 
             return grailsPlugins.values().findAll { GrailsPlugin plugin ->
-                String name = plugin.bintrayPackage?.name
-                (
-                        (name && name.replaceAll('-', ' ').toLowerCase().contains(query.toLowerCase())) ||
-                                (name && name.toLowerCase().contains(query.toLowerCase())) ||
-                                (plugin.bintrayPackage?.desc && plugin.bintrayPackage?.desc?.toLowerCase()?.contains(query.toLowerCase())) ||
-                                (plugin.bintrayPackage?.labels?.any { String label -> label.toLowerCase().contains(query.toLowerCase()) })
-                )
+                final String name = plugin.bintrayPackage?.name
+                (name && name.replaceAll('-', ' ').toLowerCase().contains(query.toLowerCase())) ||
+                        (name && name.toLowerCase().contains(query.toLowerCase())) ||
+                        (plugin.bintrayPackage?.desc && plugin.bintrayPackage?.desc?.toLowerCase()?.contains(query.toLowerCase())) ||
+                        (plugin.bintrayPackage?.labels?.any { String label -> label.toLowerCase().contains(query.toLowerCase()) })
             } as List<GrailsPlugin>
         }
         findAll()

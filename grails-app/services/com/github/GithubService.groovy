@@ -16,6 +16,7 @@ import io.micronaut.http.client.exceptions.HttpClientResponseException
 class GithubService implements GrailsConfigurationAware {
 
     private static final String GITHUB_API_URL = 'https://api.github.com'
+    public static final String GITHUB_SLUG_REGEX = /.*github\.com\/([^\/]+\/[^\/\.]+).*/
     String username
     String token
     String userAgent
@@ -29,8 +30,8 @@ class GithubService implements GrailsConfigurationAware {
     }
 
     @CompileDynamic
-    String ownerAndRepo(String vcsUrl) {
-        def matcher = vcsUrl =~ /.*github\.com\/([^\/]+\/[^\/\.]+).*/
+    static String ownerAndRepo(String vcsUrl) {
+        def matcher = vcsUrl =~ GITHUB_SLUG_REGEX
         if (matcher.matches()) {
             return matcher[0][1]
         }
