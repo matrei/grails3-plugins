@@ -21,9 +21,9 @@
         <meta name="twitter:card" content="summary">
         <meta name="twitter:image" content="${asset.assetPath(src: 'grails-logo-light.png', absolute: true)}" />
 
-        <g:if test="${plugin.latest_version}">
+        <g:if test="${plugin.latestVersion}">
             <meta name="twitter:label1" value="Latest Version" />
-            <meta name="twitter:data1" value="${plugin.latest_version}" />
+            <meta name="twitter:data1" value="${plugin.latestVersion}" />
             <meta name="twitter:label2" value="Published" />
             <meta name="twitter:data2" value="${lastUpdated}" />
         </g:if>

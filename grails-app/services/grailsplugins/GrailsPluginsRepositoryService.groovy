@@ -84,7 +84,7 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
     @Override
     List<GrailsPlugin> topRatedPlugins() {
         grailsPlugins.values().findAll { GrailsPlugin  plugin ->
-            plugin.githubRepository?.stargazers_count
+            plugin.githubRepository?.stargazersCount
         }.sort { GrailsPlugin a, GrailsPlugin b ->
             Integer aStarCount = a.githubRepository?.stargazersCount
             Integer bStarCount = b.githubRepository?.stargazersCount

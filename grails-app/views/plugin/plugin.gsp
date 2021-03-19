@@ -45,7 +45,7 @@
             <pre>
 <code>
 dependencies {
-    compile '${plugin.bintrayPackage?.systemIds?.getAt(0)}:${plugin.bintrayPackage?.latest_version}'
+    compile '${plugin.bintrayPackage?.systemIds?.getAt(0)}:${plugin.bintrayPackage?.latestVersion}'
 }
 </code>
             </pre>

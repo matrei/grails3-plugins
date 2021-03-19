@@ -1,68 +1,39 @@
 package com.bintray
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.databind.annotation.JsonNaming
+import com.github.GithubService
 import groovy.transform.CompileStatic
 
 @CompileStatic
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 class BintrayPackage {
     String name
     String repo
     String owner
     String desc
     List<String> labels
-    List<String> attribute_names
+    List<String> attributeNames
     List<String> licenses
-    List<String> custom_licenses
-    Integer followers_count
+    List<String> customLicenses
+    Integer followersCount
     String created
-    String website_url
-    String issue_tracker_url
-    List<String> linked_to_repos
+    String websiteUrl
+    String issueTrackerUrl
+    List<String> linkedToRepos
     List<String> permissions
     List<String> versions
-    String latest_version
+    String latestVersion
     String updated
-    Integer rating_count
-    List<String> system_ids
-    String vcs_url
+    Integer ratingCount
+    List<String> systemIds
+    String vcsUrl
     String maturity
+    String mavenMetadataUrl
+    String githubSlug
 
-    List<String> getAttributeNames() {
-        attribute_names
-    }
-
-    List<String> getCustomLicenses() {
-        custom_licenses
-    }
-
-    Integer getFollowersCount() {
-        followers_count
-    }
-
-    String getWebsiteUrl() {
-        website_url
-    }
-
-    String getIssueTrackerUrl() {
-        issue_tracker_url
-    }
-
-    List<String> getLinkedToRepos() {
-        linked_to_repos
-    }
-
-    String getLatestVersion() {
-        latest_version
-    }
-
-    Integer getRatingCount() {
-        rating_count
-    }
-
-    List<String> getSystemIds() {
-        system_ids
-    }
-
-    String getVcsUrl() {
-        vcs_url
+    void setVcsUrl(String vcsUrl) {
+        this.vcsUrl = vcsUrl
+        this.githubSlug = GithubService.ownerAndRepo(vcsUrl)
     }
 }
