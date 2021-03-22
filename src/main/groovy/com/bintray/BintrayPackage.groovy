@@ -1,11 +1,13 @@
 package com.bintray
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import com.github.GithubService
 import groovy.transform.CompileStatic
 
 @CompileStatic
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 class BintrayPackage {
     String name
