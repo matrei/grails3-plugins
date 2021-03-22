@@ -6,7 +6,12 @@ import groovy.transform.CompileStatic
 
 @CompileStatic
 interface GrailsPluginsRepository {
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
     BintrayKey save(BintrayPackage bintrayPackage)
+    BintrayKey save(GrailsPlugin plugin)
     BintrayKey updateGithubRepository(BintrayKey key, GithubRepository githubRepository)
     BintrayKey updateGithubRepositoryReadme(BintrayKey key, String readme)
     GrailsPlugin find(BintrayKey key)

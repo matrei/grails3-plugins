@@ -59,6 +59,15 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
 
     @Synchronized
     @Override
+    BintrayKey save(GrailsPlugin plugin) {
+        BintrayKey key = BintrayKey.of(plugin.bintrayPackage)
+        grailsPlugins.put(key, plugin)
+        versions[key] = plugin.bintrayPackage.latestVersion
+        key
+    }
+
+    @Synchronized
+    @Override
     BintrayKey updateGithubRepository(BintrayKey key, GithubRepository githubRepository) {
         grailsPlugins[key]?.githubRepository = githubRepository
         key
