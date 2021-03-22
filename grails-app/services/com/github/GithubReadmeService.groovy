@@ -1,5 +1,6 @@
 package com.github
 
+import grails.async.Promises
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
@@ -19,11 +20,14 @@ class GithubReadmeService {
     }
 
     String fetchAsciidoc(String githubSlug) {
-        String content = fetchUrl("/${githubSlug}/master/README.adoc".toString())
-        if (!content) {
-            content = fetchUrl("/${githubSlug}/master/README.asciidoc".toString())
-        }
-        return content
+        Promises.task {
+            fetchUrl("/${githubSlug}/master/README.adoc".toString())
+        }.onComplete { content ->
+            if (!content) {
+                content = fetchUrl("/${githubSlug}/master/README.asciidoc".toString())
+            }
+            content
+        }.get()
     }
 
     private String fetchUrl(String url) {
