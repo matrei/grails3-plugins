@@ -21,8 +21,9 @@ class GithubReadmeService {
     String fetchAsciidoc(String githubSlug) {
         String content = fetchUrl("/${githubSlug}/master/README.adoc".toString())
         if (!content) {
-            fetchUrl("/${githubSlug}/master/README.asciidoc".toString())
+            content = fetchUrl("/${githubSlug}/master/README.asciidoc".toString())
         }
+        return content
     }
 
     private String fetchUrl(String url) {
