@@ -14,6 +14,10 @@ import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.http.uri.UriBuilder
 
+/**
+ * @deprecated We are no longer using Bintray API. Instead read Grails plugins metadata from https://grails.github.io/grails-plugins-metadata/grails-plugins.json
+ */
+@Deprecated
 @CompileStatic
 @Slf4j
 class BintrayService implements GrailsConfigurationAware {
@@ -26,6 +30,10 @@ class BintrayService implements GrailsConfigurationAware {
     String username
     BlockingHttpClient client = HttpClient.create(new URL(BINTRAY_API_URL)).toBlocking()
 
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
     @Override
     void setConfiguration(Config co) {
         organization = co.getProperty('bintray.organization', String, 'grails')
@@ -34,6 +42,10 @@ class BintrayService implements GrailsConfigurationAware {
         this.token = co.getProperty('bintray.token', String)
     }
 
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
     BintrayPackage fetchBintrayPackage(String name, String organization = this.organization, String repository = this.repository) throws IOException {
         final String url = "/packages/${organization}/${repository}/${name}".toString()
         HttpResponse<BintrayPackage> response = null
@@ -50,6 +62,10 @@ class BintrayService implements GrailsConfigurationAware {
         null
     }
 
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
     @CompileDynamic
     BintrayPackageResponse fetchBintrayPackagesByStartPosition(Integer startPos) throws NumberFormatException, IOException {
         log.trace 'Fetching bintray packaging at position: {}', startPos
@@ -73,6 +89,10 @@ class BintrayService implements GrailsConfigurationAware {
         }
     }
 
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
     List<Integer> expectedExtraStarPositions(Integer total, Integer startPosition, Integer endPosition) {
         if ( total == null || startPosition == null || endPosition == null) {
             return []
@@ -90,6 +110,7 @@ class BintrayService implements GrailsConfigurationAware {
         }
         result
     }
+
 
     private Integer totalHeader(Headers headers) {
         Optional<Integer> optionalInteger = headers.get("X-RangeLimit-Total", Integer)
