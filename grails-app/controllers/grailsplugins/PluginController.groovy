@@ -1,6 +1,7 @@
 package grailsplugins
 
 import grails.config.Config
+import grails.converters.JSON
 import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
 
@@ -82,5 +83,10 @@ class PluginController implements GrailsConfigurationAware {
             return
         }
         render view: 'plugin', model: [plugin: plugin]
+    }
+
+    def json() {
+        List<GrailsPlugin> pluginList = grailsPluginsRepository.findAll()
+        render pluginList as JSON
     }
 }
