@@ -12,22 +12,12 @@ class BintrayPackage {
     String owner
     String desc
     List<String> labels
-    List<String> attributeNames
     List<String> licenses
-    List<String> customLicenses
-    Integer followersCount
-    String created
-    String websiteUrl
     String issueTrackerUrl
-    List<String> linkedToRepos
-    List<String> permissions
-    List<String> versions
     String latestVersion
     String updated
-    Integer ratingCount
     List<String> systemIds
     String vcsUrl
-    String maturity
     String mavenMetadataUrl
     String githubSlug
 
