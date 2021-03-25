@@ -46,7 +46,7 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
     }
 
     /**
-     * @deprecated Use {@link #save(grailsplugins.GrailsPlugin)} instead.
+     * @deprecated Use {@link #save(grailsplugins.BintrayKey, grailsplugins.GrailsPlugin)} instead.
      */
     @Deprecated
     @Synchronized
@@ -63,8 +63,7 @@ class GrailsPluginsRepositoryService implements GrailsPluginsRepository, GrailsC
 
     @Synchronized
     @Override
-    BintrayKey save(GrailsPlugin plugin) {
-        BintrayKey key = BintrayKey.of(plugin.bintrayPackage)
+    BintrayKey save(BintrayKey key, GrailsPlugin plugin) {
         grailsPlugins.put(key, plugin)
         plugin.lastUpdated = new Date()
         versions[key] = plugin.bintrayPackage.latestVersion

@@ -118,9 +118,11 @@ class GrailsPluginsService implements GrailsConfigurationAware {
                             }
                         })
                         .forEach({ plugin ->
-                            final BintrayKey pluginKey = grailsPluginsRepository.save(plugin)
-                            fetchGithubRepository(plugin, pluginKey)
-                            fetchGithubReadme(pluginKey)
+                            final BintrayKey key = BintrayKey.of(plugin.bintrayPackage)
+                            final String oldVcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
+                            grailsPluginsRepository.save(key, plugin)
+                            fetchGithubRepository(key, oldVcsUrl, plugin.bintrayPackage.vcsUrl)
+                            fetchGithubReadme(key)
                         })
             }
         } catch(HttpClientResponseException e) {
@@ -217,9 +219,7 @@ class GrailsPluginsService implements GrailsConfigurationAware {
         }
     }
 
-    void fetchGithubRepository(GrailsPlugin plugin, BintrayKey key) {
-        final String newVcsUrl = plugin.bintrayPackage.vcsUrl
-        String oldVcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
+    void fetchGithubRepository(BintrayKey key, String oldVcsUrl, String newVcsUrl) {
         if (newVcsUrl && newVcsUrl != oldVcsUrl ) {
             task {
                 githubService.fetchGithubRepository(newVcsUrl)

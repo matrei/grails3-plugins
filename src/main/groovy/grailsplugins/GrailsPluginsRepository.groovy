@@ -11,7 +11,7 @@ interface GrailsPluginsRepository {
      */
     @Deprecated
     BintrayKey save(BintrayPackage bintrayPackage)
-    BintrayKey save(GrailsPlugin plugin)
+    BintrayKey save(BintrayKey key, GrailsPlugin plugin)
     BintrayKey updateGithubRepository(BintrayKey key, GithubRepository githubRepository)
     BintrayKey updateGithubRepositoryReadme(BintrayKey key, String readme)
     GrailsPlugin find(BintrayKey key)
