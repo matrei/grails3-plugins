@@ -106,11 +106,10 @@ com:
 ---
 environments:
     development:
-        grails:
-            serverURL: http://localhost:8080
+        grails.serverURL: http://localhost:8080
     production:
-        grails:
-            serverURL: http://plugins.grails.org
+        com.grails.plugins.refresh.enabled: false
+        grails.serverURL: https://plugins.grails.org
 ---
 micronaut:
     http:
