@@ -109,25 +109,34 @@ class GrailsPluginsService implements GrailsConfigurationAware {
                 plugins
                         .stream()
                         .filter({ plugin -> !blacklist.contains(plugin.bintrayPackage.name) })
-                        .peek({ plugin ->
-                            final BintrayPackage bintrayPackage = plugin.bintrayPackage
-                            final BintrayKey pluginKey = BintrayKey.of(bintrayPackage)
-                            String previousVersion = grailsPluginsRepository.findPreviousLatestVersion(pluginKey)
-                            if (previousVersion && isThereANewVersion(bintrayPackage, previousVersion)) {
-                                tweetAboutNewVersion(bintrayPackage)
-                            }
-                        })
-                        .forEach({ plugin ->
-                            final BintrayKey key = BintrayKey.of(plugin.bintrayPackage)
-                            final String oldVcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
-                            grailsPluginsRepository.save(key, plugin)
-                            fetchGithubRepository(key, oldVcsUrl, plugin.bintrayPackage.vcsUrl)
-                            fetchGithubReadme(key)
-                        })
+                        .peek({ plugin -> tweetNewVersion(plugin) })
+                        .forEach({ plugin -> process(plugin) })
             }
         } catch(HttpClientResponseException e) {
             log.warn 'Response {}. Could not fetch Grails plugin metadata from Gituhb with error {}', response.status.code, e.message
         }
+    }
+
+    private void process(GrailsPlugin plugin) {
+        final BintrayKey key = getKey(plugin.bintrayPackage)
+        final String oldVcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
+        grailsPluginsRepository.save(key, plugin)
+        fetchGithubRepository(key, oldVcsUrl, plugin.bintrayPackage.vcsUrl)
+        fetchGithubReadme(key)
+    }
+
+    private void tweetNewVersion(GrailsPlugin plugin) {
+        final BintrayPackage bintrayPackage = plugin.bintrayPackage
+        final BintrayKey key = this.getKey(bintrayPackage)
+        String previousVersion = grailsPluginsRepository.findPreviousLatestVersion(key)
+        if (previousVersion && isThereANewVersion(bintrayPackage, previousVersion)) {
+            tweetAboutNewVersion(bintrayPackage)
+        }
+    }
+
+    @SuppressWarnings('GrMethodMayBeStatic')
+    private BintrayKey getKey(BintrayPackage bintrayPackage) {
+        BintrayKey.of(bintrayPackage)
     }
 
     /**
