@@ -10,6 +10,7 @@ import groovy.transform.CompileStatic
 class GrailsPlugin {
     BintrayPackage bintrayPackage
     GithubRepository githubRepository
+    String mavenMetadataUrl
     String readme
     Date lastUpdated
 

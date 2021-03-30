@@ -15,7 +15,7 @@ class SoftwareVersion implements Comparable<SoftwareVersion> {
 
     static SoftwareVersion build(String version) {
         String[] parts = version.split("\\.")
-        SoftwareVersion softVersion
+        SoftwareVersion softVersion = null
         if (parts.length >= 3) {
             softVersion = new SoftwareVersion()
             softVersion.versionText = version

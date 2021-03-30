@@ -18,7 +18,6 @@ class BintrayPackage {
     String updated
     List<String> systemIds
     String vcsUrl
-    String mavenMetadataUrl
     String githubSlug
 
     void setVcsUrl(String vcsUrl) {
