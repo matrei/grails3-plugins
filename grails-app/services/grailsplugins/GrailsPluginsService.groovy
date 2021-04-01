@@ -229,13 +229,11 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     }
 
     void fetchGithubRepository(BintrayKey key, String oldVcsUrl, String newVcsUrl) {
-        if (newVcsUrl && newVcsUrl != oldVcsUrl ) {
-            task {
-                githubService.fetchGithubRepository(newVcsUrl)
-            }.onComplete { GithubRepository githubRepository ->
-                if ( githubRepository ) {
-                    grailsPluginsRepository.updateGithubRepository(key, githubRepository)
-                }
+        task {
+            githubService.fetchGithubRepository(newVcsUrl)
+        }.onComplete { GithubRepository githubRepository ->
+            if (githubRepository) {
+                grailsPluginsRepository.updateGithubRepository(key, githubRepository)
             }
         }
     }
