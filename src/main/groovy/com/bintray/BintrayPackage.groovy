@@ -1,5 +1,6 @@
 package com.bintray
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.github.GithubService
 import groovy.transform.CompileStatic
@@ -18,6 +19,8 @@ class BintrayPackage {
     String updated
     List<String> systemIds
     String vcsUrl
+
+    @JsonIgnore
     String githubSlug
 
     void setVcsUrl(String vcsUrl) {

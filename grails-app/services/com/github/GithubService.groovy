@@ -52,7 +52,6 @@ class GithubService implements GrailsConfigurationAware {
             return response.body()
         } catch(HttpClientResponseException e) {
             log.warn 'Response {}. Could not fetch github repository at {}', response?.status?.code, vcsUrl
-
         }
         null
     }

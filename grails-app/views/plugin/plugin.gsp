@@ -27,8 +27,8 @@
         <g:if test="${plugin.bintrayPackage?.vcsUrl}">
             <span> | </span> <a href="${plugin.bintrayPackage?.vcsUrl}">Source</a>
         </g:if>
-        <g:if test="${plugin.githubRepository?.hasPages}">
-            <span> | </span><a href="${grailsplugins.githubpageUrl(githubRepository: plugin.githubRepository)}">Documentation</a>
+        <g:if test="${plugin.documentationUrl}">
+            <span> | </span><a href="${plugin.documentationUrl}">Documentation</a>
         </g:if>
         <g:if test="${plugin.bintrayPackage?.licenses}">
             <span> | </span><b><g:message code="plugin.license" default="License"/>:</b> <a href="https://opensource.org/licenses/${plugin.bintrayPackage?.licenses[0]}">${plugin.bintrayPackage?.licenses[0]}</a>

@@ -14,5 +14,4 @@ class GithubRepository {
     GithubOwner owner
     String htmlUrl
     Integer stargazersCount
-    Boolean hasPages
 }

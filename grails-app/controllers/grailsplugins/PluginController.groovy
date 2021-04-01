@@ -1,7 +1,7 @@
 package grailsplugins
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import grails.config.Config
-import grails.converters.JSON
 import grails.core.support.GrailsConfigurationAware
 import groovy.transform.CompileStatic
 
@@ -87,6 +87,9 @@ class PluginController implements GrailsConfigurationAware {
 
     def json() {
         List<GrailsPlugin> pluginList = grailsPluginsRepository.findAll()
-        render pluginList as JSON
+        final ObjectMapper objectMapper = new ObjectMapper()
+        objectMapper.writeValue(response.outputStream, pluginList)
+        response.outputStream.flush()
+        return
     }
 }
