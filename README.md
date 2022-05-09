@@ -1,7 +1,7 @@
 Grails Plugins
 ---
 
-This project is a Grails app that provides a better viewing experience for Grails plugins which are hosted in the [Grails plugins repo in Bintray](https://bintray.com/grails/plugins). The purpose is to make it quicker and easier to find and use Grails plugins!
+This project is a Grails app that provides a better viewing experience for Grails plugins which are hosted in the [Grails plugins repo](https://repo.grails.org/ui/repos/tree/General/plugins). The purpose is to make it quicker and easier to find and use Grails plugins!
 
 It is published at <http://plugins.grails.org/>. Plugin data is updated hourly.
 
