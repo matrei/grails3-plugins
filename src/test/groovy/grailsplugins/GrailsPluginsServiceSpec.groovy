@@ -1,7 +1,6 @@
 package grailsplugins
 
 import com.bintray.BintrayPackage
-import com.bintray.BintrayService
 import com.github.GithubReadmeService
 import com.github.GithubService
 import grails.testing.services.ServiceUnitTest
@@ -15,7 +14,6 @@ class GrailsPluginsServiceSpec extends Specification implements ServiceUnitTest<
 
     Closure doWithSpring() {{ ->
         grailsPluginsRepository(GrailsPluginsRepositoryService)
-        bintrayService(BintrayService)
         githubService(GithubService)
         githubReadmeService(GithubReadmeService)
         asciidocRenderService(AsciidocRenderService)
@@ -41,9 +39,6 @@ class GrailsPluginsServiceSpec extends Specification implements ServiceUnitTest<
     })
     def "test fetchBintrayPackages"() {
         given:
-        service.bintrayService.token = System.getProperty('GP_BINTRAY_TOKEN') ?: System.getenv('GP_BINTRAY_TOKEN')
-        service.bintrayService.username = System.getProperty('GP_BINTRAY_USERNAME')?: System.getenv('GP_BINTRAY_USERNAME')
-
         service.githubService.username = System.getProperty('GP_GITHUB_USERNAME')?: System.getenv('GP_GITHUB_USERNAME')
         service.githubService.token = System.getProperty('GP_GITHUB_TOKEN')?: System.getenv('GP_GITHUB_TOKEN')
 
