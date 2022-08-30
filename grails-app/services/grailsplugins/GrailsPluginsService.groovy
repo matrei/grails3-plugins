@@ -92,7 +92,7 @@ class GrailsPluginsService implements GrailsConfigurationAware {
      */
     @Deprecated
     void fetch(BintrayPackageResponse rsp) {
-        for (BintrayPackageSimple bintrayPackageSimple : rsp.bintrayPackageList) {
+        for (BintrayPackageSimple bintrayPackageSimple : rsp.bintrayPackageList ) {
             log.debug("fetching bintray package {}", bintrayPackageSimple.toString())
             fetch(bintrayPackageSimple)
         }
@@ -105,12 +105,6 @@ class GrailsPluginsService implements GrailsConfigurationAware {
             response = githubClient.exchange(
                     HttpRequest.GET(GRAILS_PLUGINS_METADATA_PATH), Argument.listOf(GrailsPlugin))
             List<GrailsPlugin> plugins = response.body()
-
-//            /** ================================
-//             * Debug
-//             * ===================================
-//             */
-//            plugins = plugins[0,1]
             if (response.status() == HttpStatus.OK && plugins) {
                 plugins
                         .stream()
