@@ -12,7 +12,7 @@ class SyncPluginsJobService {
 
 	GrailsPluginsService grailsPluginsService
 
-	@Scheduled(fixedRate = 43200000L, initialDelay = 1000L) // 12 hour, delay 1s
+	@Scheduled(fixedRate = 3600000L, initialDelay = 1000L) // 1 hour, delay 1s
 	void execute() {
 		log.info 'Fetching latest plugin data'
 		grailsPluginsService.refresh()
