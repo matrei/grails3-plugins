@@ -1,6 +1,9 @@
 package grailsplugins
 
 import com.bintray.BintrayPackage
+import com.bintray.BintrayPackageResponse
+import com.bintray.BintrayPackageSimple
+import com.bintray.BintrayService
 import com.github.GithubReadmeService
 import com.github.GithubRepository
 import com.github.GithubService
@@ -29,6 +32,7 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     static final String GRAILS_PLUGINS_METADATA_PATH = "/grails-plugins-metadata/grails-plugins.json"
 
     GrailsPluginsRepository grailsPluginsRepository
+    BintrayService bintrayService
     GithubService githubService
     GithubReadmeService githubReadmeService
     AsciidocRenderService asciidocRenderService
@@ -54,6 +58,44 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     void refresh() {
         grailsPluginsRepository.clearNotUpdatedSince(oneDayAgo())
         refreshFromGithub()
+    }
+
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
+    private void refreshBintrayPackages() {
+        Integer startAt = 0
+        BintrayPackageResponse rsp = bintrayService.fetchBintrayPackagesByStartPosition(startAt)
+        if (rsp != null) {
+            log.trace 'BintrayPackageResponse start: {} end: {} total: {}', rsp.start, rsp.end, rsp.total
+            List<Integer> positions = bintrayService.expectedExtraStarPositions(rsp.total, rsp.start, rsp.end)
+            log.trace("positions {}", positions)
+            positions.each { Integer start ->
+                task {
+                    log.trace("fetching bintray packages with start {}", start)
+                    bintrayService.fetchBintrayPackagesByStartPosition(start)
+                }.onComplete { BintrayPackageResponse bintrayPackageResponse ->
+                    log.trace 'BintrayPackageResponse start: {} end: {} total: {}', bintrayPackageResponse.start, bintrayPackageResponse.end, bintrayPackageResponse.total
+                    if (bintrayPackageResponse != null) {
+                        fetch(bintrayPackageResponse)
+                    } else {
+                        log.warn("no bintray package response for {}", start)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
+    void fetch(BintrayPackageResponse rsp) {
+        for (BintrayPackageSimple bintrayPackageSimple : rsp.bintrayPackageList ) {
+            log.debug("fetching bintray package {}", bintrayPackageSimple.toString())
+            fetch(bintrayPackageSimple)
+        }
     }
 
     void refreshFromGithub() {
@@ -98,6 +140,35 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     @SuppressWarnings('GrMethodMayBeStatic')
     private BintrayKey getKey(BintrayPackage bintrayPackage) {
         BintrayKey.of(bintrayPackage)
+    }
+
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
+    void fetch(BintrayPackageSimple bintrayPackageSimple) {
+        if (!blacklist.contains(bintrayPackageSimple.name)) {
+            task {
+                log.trace("fetch bintray package {}", bintrayPackageSimple.name)
+                bintrayService.fetchBintrayPackage(bintrayPackageSimple.name)
+            }.onComplete { BintrayPackage bintrayPackage ->
+                if (bintrayPackage) {
+                    BintrayKey key = BintrayKey.of(bintrayPackage)
+                    String previousVersion = grailsPluginsRepository.findPreviousLatestVersion(key)
+
+                    if (previousVersion &&
+                            isThereANewVersion(bintrayPackage, previousVersion)) {
+                        tweetAboutNewVersion(bintrayPackage)
+                    }
+                    log.trace("saving {}", bintrayPackage.name)
+                    key = grailsPluginsRepository.save(bintrayPackage)
+                    fetchGithubRepository(key)
+                    fetchGithubReadme(key)
+                } else {
+                    log.warn("could not fetch bintray package {}", bintrayPackageSimple.name)
+                }
+            }
+        }
     }
 
     void tweetAboutNewVersion(BintrayPackage bintrayPackage) {
@@ -154,4 +225,22 @@ class GrailsPluginsService implements GrailsConfigurationAware {
             grailsPluginsRepository.updateGithubRepository(key, githubRepository)
         }
     }
+
+    /**
+     * @deprecated We are no longer using Bintray API.
+     */
+    @Deprecated
+    void fetchGithubRepository(BintrayKey key) {
+        String vcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
+        if ( vcsUrl ) {
+            task {
+                githubService.fetchGithubRepository(vcsUrl)
+            }.onComplete { GithubRepository githubRepository ->
+                if ( githubRepository ) {
+                    grailsPluginsRepository.updateGithubRepository(key, githubRepository)
+                }
+            }
+        }
+    }
+
 }
