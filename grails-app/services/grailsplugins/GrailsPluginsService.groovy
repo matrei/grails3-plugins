@@ -112,7 +112,7 @@ class GrailsPluginsService implements GrailsConfigurationAware {
                         .peek({ plugin -> tweetNewVersion(plugin) })
                         .forEach({ plugin -> process(plugin) })
             }
-        } catch(HttpClientResponseException e) {
+        } catch (HttpClientResponseException e) {
             log.warn 'Response {}. Could not fetch Grails plugin metadata from Gituhb with error {}', response.status.code, e.message
         }
     }
@@ -121,8 +121,11 @@ class GrailsPluginsService implements GrailsConfigurationAware {
         final BintrayKey key = getKey(plugin.bintrayPackage)
         final String oldVcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
         grailsPluginsRepository.save(key, plugin)
-        fetchGithubRepository(key, oldVcsUrl, plugin.bintrayPackage.vcsUrl)
-        fetchGithubReadme(key)
+        task {
+            fetchGithubRepository(key, oldVcsUrl, plugin.bintrayPackage.vcsUrl)
+            fetchGithubReadme(key)
+        }
+
     }
 
     private void tweetNewVersion(GrailsPlugin plugin) {
@@ -144,17 +147,17 @@ class GrailsPluginsService implements GrailsConfigurationAware {
      */
     @Deprecated
     void fetch(BintrayPackageSimple bintrayPackageSimple) {
-        if ( !blacklist.contains(bintrayPackageSimple.name) ) {
+        if (!blacklist.contains(bintrayPackageSimple.name)) {
             task {
                 log.trace("fetch bintray package {}", bintrayPackageSimple.name)
                 bintrayService.fetchBintrayPackage(bintrayPackageSimple.name)
             }.onComplete { BintrayPackage bintrayPackage ->
-                if ( bintrayPackage ) {
+                if (bintrayPackage) {
                     BintrayKey key = BintrayKey.of(bintrayPackage)
                     String previousVersion = grailsPluginsRepository.findPreviousLatestVersion(key)
 
-                    if ( previousVersion &&
-                         isThereANewVersion(bintrayPackage, previousVersion) ) {
+                    if (previousVersion &&
+                            isThereANewVersion(bintrayPackage, previousVersion)) {
                         tweetAboutNewVersion(bintrayPackage)
                     }
                     log.trace("saving {}", bintrayPackage.name)
@@ -173,20 +176,20 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     }
 
     boolean isThereANewVersion(BintrayPackage bintrayPackage, String previousVersion) {
-        if ( !previousVersion ) {
+        if (!previousVersion) {
             return false
         }
         try {
             SoftwareVersion previousSoftwareVersion = SoftwareVersion.build(previousVersion)
             SoftwareVersion softwareVersion = SoftwareVersion.build(bintrayPackage.latestVersion)
-            if ( !softwareVersion || !previousSoftwareVersion || softwareVersion.isSnapshot() ) {
+            if (!softwareVersion || !previousSoftwareVersion || softwareVersion.isSnapshot()) {
                 return false
             }
             return softwareVersion <=> previousSoftwareVersion
 
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
 
-            if ( previousVersion && bintrayPackage.latestVersion && previousVersion != bintrayPackage.latestVersion ) {
+            if (previousVersion && bintrayPackage.latestVersion && previousVersion != bintrayPackage.latestVersion) {
                 return true
             }
 
@@ -197,31 +200,19 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     void fetchGithubReadme(BintrayKey key) {
         String vcsUrl = grailsPluginsRepository.find(key)?.bintrayPackage?.vcsUrl
         final String githubSlug = grailsPluginsRepository.find(key)?.bintrayPackage?.githubSlug
-        if ( vcsUrl && githubSlug ) {
-            task {
-                githubReadmeService.fetchMarkdown(githubSlug)
-            }.onComplete { String markdown ->
-                if ( markdown ) {
-                    task {
-                        markdownRenderService.renderMarkdown(markdown)
-                    }.onComplete { String html ->
-                        if ( html ) {
-                            grailsPluginsRepository.updateGithubRepositoryReadme(key, html)
-                        }
-                    }
-                } else {
-                    task {
-                        githubReadmeService.fetchAsciidoc(githubSlug)
-                    }.onComplete { String asciidoc ->
-                        if ( asciidoc ) {
-                            task {
-                                asciidocRenderService.renderAsciidoc(asciidoc)
-                            }.onComplete { String html ->
-                                if ( html ) {
-                                    grailsPluginsRepository.updateGithubRepositoryReadme(key, html)
-                                }
-                            }
-                        }
+        if (vcsUrl && githubSlug) {
+            String markdown = githubReadmeService.fetchMarkdown(githubSlug)
+            if (markdown) {
+                String html = markdownRenderService.renderMarkdown(markdown)
+                if (html) {
+                    grailsPluginsRepository.updateGithubRepositoryReadme(key, html)
+                }
+            } else {
+                String asciidoc = githubReadmeService.fetchAsciidoc(githubSlug)
+                if (asciidoc) {
+                    String html = asciidocRenderService.renderAsciidoc(asciidoc)
+                    if (html) {
+                        grailsPluginsRepository.updateGithubRepositoryReadme(key, html)
                     }
                 }
             }
@@ -229,12 +220,9 @@ class GrailsPluginsService implements GrailsConfigurationAware {
     }
 
     void fetchGithubRepository(BintrayKey key, String oldVcsUrl, String newVcsUrl) {
-        task {
-            githubService.fetchGithubRepository(newVcsUrl)
-        }.onComplete { GithubRepository githubRepository ->
-            if (githubRepository) {
-                grailsPluginsRepository.updateGithubRepository(key, githubRepository)
-            }
+        GithubRepository githubRepository = githubService.fetchGithubRepository(newVcsUrl)
+        if (githubRepository) {
+            grailsPluginsRepository.updateGithubRepository(key, githubRepository)
         }
     }
 
