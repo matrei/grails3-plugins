@@ -16,6 +16,15 @@ spring:
     groovy:
         template:
             check-template-location: false
+    devtools:
+        restart:
+            additional-exclude:
+                - '*.gsp'
+                - '**/*.gsp'
+                - '*.gson'
+                - '**/*.gson'
+                - 'logback.groovy'
+                - '*.properties'
 management:
     endpoints:
         enabled-by-default: true
@@ -25,10 +34,6 @@ management:
             mode: simple
 ---
 grails:
-    plugins:
-        blacklist:
-            - grails-navigation-core
-            - grails-navigation
     assets:
         babel:
             enabled: true
@@ -84,34 +89,58 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
-
-twitter:
-    enabled: true
-    consumerKey: ${GP_TWITTER_CONSUMER_KEY}
-    consumerSecret: ${GP_TWITTER_CONSUMER_SECRET}
-    accessToken: ${GP_TWITTER_ACCESS_TOKEN}
-    accessTokenSecret: ${GP_TWITTER_ACCESS_TOKEN_SECRET}
-github:
-    username: ${GP_GITHUB_USERNAME}
-    token: ${GP_GITHUB_TOKEN}
-bintray:
-    username: ${GP_BINTRAY_USERNAME}
-    token: ${GP_BINTRAY_TOKEN}
 ---
-com:
-    grails:
-        plugins:
-            refresh:
-                enabled: true
----
-environments:
-    development:
-        grails.serverURL: http://localhost:8080
-    production:
-        com.grails.plugins.refresh.enabled: false
-        grails.serverURL: https://plugins.grails.org
----
-micronaut:
-    http:
-        client:
+grailsplugins:
+    refresh-enabled: false
+    number-of-latest-plugins: 5
+    number-of-top-rated-plugins: 5
+    stale-after-minutes: 1440
+    sync:
+        initial-delay: 8s
+        fixed-delay: 1h
+    blacklist:
+        - grails-navigation-core
+        - grails-navigation
+    client:
+        metadata:
+            user-agent: Grails Plugin Portal
+            url: ${GP_METADATA_BASE_URL:`https://grails.github.io`}
+            path: ${GP_METADATA_PATH:/grails-plugins-metadata/grails-plugins.json}
             read-timeout: 15s
+            retry:
+                attempts: 3
+                delay: 5s
+        github-api:
+            user-agent: Grails Plugin Portal
+            url: ${GP_GITHUB_API_BASE_URL:`https://api.github.com`}
+            username: ${GP_GITHUB_USERNAME:}
+            token: ${GP_GITHUB_TOKEN:}
+            read-timeout: 15s
+            retry:
+                attempts: 3
+                delay: 1s
+        readme:
+            user-agent: Grails Plugin Portal
+            url: ${GP_README_BASE_URL:`https://raw.githubusercontent.com`}
+            markdown-filenames:
+                - README.md
+                - Readme.md
+                - readme.md
+                - README.markdown
+                - Readme.markdown
+                - readme.markdown
+            asciidoc-filenames:
+                - README.adoc
+                - Readme.adoc
+                - readme.adoc
+                - README.asciidoc
+                - Readme.asciidoc
+                - readme.asciidoc
+    twitter:
+        enabled: false
+        debug-enabled: false
+        consumer-key: ${GP_TWITTER_CONSUMER_KEY:}
+        consumer-secret: ${GP_TWITTER_CONSUMER_SECRET:}
+        access-token: ${GP_TWITTER_ACCESS_TOKEN:}
+        access-token-secret: ${GP_TWITTER_ACCESS_TOKEN_SECRET:}
+---

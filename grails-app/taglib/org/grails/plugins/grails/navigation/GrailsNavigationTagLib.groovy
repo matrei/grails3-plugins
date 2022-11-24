@@ -1,6 +1,8 @@
 package org.grails.plugins.grails.navigation
 
-import org.grails.pages.HtmlPage
+import grailsplugins.markup.pages.HtmlPage
+import grailsplugins.markup.plugins.grails.navigation.GenericPage
+import grailsplugins.markup.plugins.grails.navigation.PluginsPage
 
 class GrailsNavigationTagLib {
 

@@ -1,0 +1,7 @@
+---
+grailsplugins:
+    refresh-enabled: true
+    twitter:
+        enabled: false
+        debug-enabled: true
+---

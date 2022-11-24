@@ -1,21 +1,35 @@
 package grailsplugins
 
-import grails.testing.web.controllers.ControllerUnitTest
-import grailsplugins.PluginController
+import grails.testing.mixin.integration.Integration
+import grails.testing.spock.OnceBefore
+import io.micronaut.http.HttpMethod
+import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpStatus
+import io.micronaut.http.client.HttpClient
+import io.micronaut.http.client.exceptions.HttpClientResponseException
+import spock.lang.AutoCleanup
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Unroll
-import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED
 
-class PluginControllerAllowedMethodsSpec extends Specification implements ControllerUnitTest<PluginController> {
+@Integration(applicationClass=Application)
+class PluginControllerAllowedMethodsSpec extends Specification {
+
+    @Shared
+    @AutoCleanup
+    HttpClient client
+
+    @OnceBefore
+    void initClient() { client = HttpClient.create("http://localhost:$serverPort".toURL()) }
 
     @Unroll
     def "test PluginController.index does not accept #method requests"(String method) {
         when:
-        request.method = method
-        controller.index()
+        client.toBlocking().exchange HttpRequest.create(HttpMethod.parse(method), '')
 
         then:
-        response.status == SC_METHOD_NOT_ALLOWED
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.METHOD_NOT_ALLOWED
 
         where:
         method << ['PATCH', 'DELETE', 'POST', 'PUT']
@@ -24,11 +38,11 @@ class PluginControllerAllowedMethodsSpec extends Specification implements Contro
     @Unroll
     def "test PluginController.refresh does not accept #method requests"(String method) {
         when:
-        request.method = method
-        controller.refresh()
+        client.toBlocking().exchange HttpRequest.create(HttpMethod.parse(method), '/plugin/refresh')
 
         then:
-        response.status == SC_METHOD_NOT_ALLOWED
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.METHOD_NOT_ALLOWED
 
         where:
         method << ['PATCH', 'DELETE', 'GET', 'PUT']
@@ -37,11 +51,11 @@ class PluginControllerAllowedMethodsSpec extends Specification implements Contro
     @Unroll
     def "test PluginController.plugin does not accept #method requests"(String method) {
         when:
-        request.method = method
-        controller.plugin()
+        client.toBlocking().exchange HttpRequest.create(HttpMethod.parse(method), '/plugin/grails-alexa-skills')
 
         then:
-        response.status == SC_METHOD_NOT_ALLOWED
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.METHOD_NOT_ALLOWED
 
         where:
         method << ['PATCH', 'DELETE', 'POST', 'PUT']
@@ -51,11 +65,11 @@ class PluginControllerAllowedMethodsSpec extends Specification implements Contro
     @Unroll
     def "test PluginController.pluginWithOwner does not accept #method requests"(String method) {
         when:
-        request.method = method
-        controller.pluginWithOwner()
+        client.toBlocking().exchange HttpRequest.create(HttpMethod.parse(method), '/plugin/rvanderwerf/grails-alexa-skills')
 
         then:
-        response.status == SC_METHOD_NOT_ALLOWED
+        HttpClientResponseException e = thrown()
+        e.status == HttpStatus.METHOD_NOT_ALLOWED
 
         where:
         method << ['PATCH', 'DELETE', 'POST', 'PUT']

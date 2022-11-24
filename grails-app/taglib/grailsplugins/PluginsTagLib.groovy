@@ -1,112 +1,104 @@
 package grailsplugins
 
-import com.github.GithubRepository
+import grailsplugins.models.GrailsPlugin
+import grailsplugins.util.EncodingUtil
 import groovy.util.logging.Slf4j
+import org.grails.buffer.GrailsPrintWriter
 
-import java.text.DateFormat
 import java.text.ParseException
-import java.text.SimpleDateFormat
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @Slf4j
 class PluginsTagLib {
-    public static final DateFormat UTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    public static final DateFormat DISPLAY = new SimpleDateFormat('MMM d, yyyy')
+
+    public static final DateTimeFormatter UTC = DateTimeFormatter.ISO_INSTANT.withZone ZoneId.of('UTC')
+    public static final DateTimeFormatter DISPLAY = DateTimeFormatter.ofLocalizedDate FormatStyle.MEDIUM
 
     static namespace = 'grailsplugins'
 
-    static returnObjectForTags = ['bintrayLink', 'githubpageUrl']
+    static returnObjectForTags = ['packageLink']
 
     def lastUpdated = { attrs, body ->
-        GrailsPlugin grailsPlugin = attrs.plugin
-        if ( grailsPlugin.bintrayPackage?.updated ) {
+        GrailsPlugin plugin = attrs.plugin as GrailsPlugin
+        if ( plugin.updated ) {
             try {
-                Date date = UTC.parse(grailsPlugin.bintrayPackage?.updated)
+                def date = UTC.parse plugin.updated
                 out << DISPLAY.format(date)
-            } catch ( ParseException e) {
-                log.error 'unable to parse updated {} for {}', grailsPlugin.bintrayPackage?.updated, grailsPlugin.bintrayPackage?.name
-            } catch ( NumberFormatException e ) {
-                log.error 'NumberFormatException {} for {}', grailsPlugin.bintrayPackage?.updated, grailsPlugin.bintrayPackage?.name
+            } catch ( ParseException ignore ) {
+                log.error 'unable to parse updated {} for {}', plugin.updated, plugin.name
+            } catch ( NumberFormatException ignore ) {
+                log.error 'NumberFormatException {} for {}', plugin.updated, plugin.name
             }
         }
     }
 
-    def githubpageUrl = { attrs, body ->
-        GithubRepository githubRepository = attrs.githubRepository
-        "https://${githubRepository.owner.login}.github.io/${githubRepository.name}/"
-    }
-
-    def bintrayLink = { attrs, body ->
-        GrailsPlugin grailsPlugin = attrs.plugin
-        "https://bintray.com/${grailsPlugin.bintrayPackage?.owner}/${grailsPlugin.bintrayPackage?.repo}/${grailsPlugin.bintrayPackage?.name}"
+    def packageLink = { attrs, body ->
+        def plugin = attrs.plugin as GrailsPlugin
+        plugin.groupId ? "https://repo.grails.org/ui/native/core/${plugin.groupId.replaceAll('\\.', '/')}/$plugin.artifactId" : ''
     }
 
     def labelsTagCloud = { attrs, body ->
-        List<GrailsPlugin> pluginList = attrs.pluginList
-        String header = labelsHeader()
-        List<Tag> tags = labelsTagCloud(pluginList)
-        renderTagCloud(tags, header, 'label', out)
+        def pluginList = attrs.pluginList as List<GrailsPlugin>
+        String header = g.message code: 'plugins.tagcloud.labels', default: 'Plugins by Tag'
+        List<Tag> tags = labelsTagCloud pluginList
+        renderTagCloud tags, header, 'label', out
     }
 
-    def ownersTagCloud = { attrs, body ->
-        List<GrailsPlugin> pluginList = attrs.pluginList
-        String header = ownersHeader()
-        List<Tag> tags = ownerTagCloud(pluginList)
-        renderTagCloud(tags, header, 'owner', out)
+    def ownersTagCloud = {attrs, body ->
+        def pluginList = attrs.pluginList as List<GrailsPlugin>
+        String header = g.message code: 'plugins.tagcloud.owner', default: 'Plugins by Owner'
+        def tags = ownerTagCloud pluginList
+        renderTagCloud tags, header, 'owner', out
     }
 
-    void renderTagCloud(List<Tag> tags, String header, String preffix, def out) {
+    void renderTagCloud(List<Tag> tags, String header, String prefix, GrailsPrintWriter out) {
+        String encodedPrefix = EncodingUtil.encodeURIComponent prefix
         out << "<div class='tagsbytopic'>"
         out << "<h3 class='columnheader'>${header}</h3>"
         out << '<ul>'
         for ( Tag tag : tags) {
-            out << "<li class='tag${tag.ocurrence}'><a href='q/${preffix}:${tag.title}'>${tag.title}</a></li>"
+            out << "<li class='tag${tag.occurrence}'><a href='q/${encodedPrefix}:${EncodingUtil.encodeURIComponent tag.title}'>${tag.title}</a></li>"
         }
         out << '</ul>'
         out << '</div>'
     }
 
-    String labelsHeader() {
-        g.message(code: 'plugins.tagcloud.labels', default: 'Plugins by Tag')
-    }
-
-    String ownersHeader() {
-        g.message(code: 'plugins.tagcloud.owner', default: 'Plugins by Owner')
-    }
-
     List<Tag> ownerTagCloud(List<GrailsPlugin> pluginList) {
-        Map<String, Integer> tagsOcurrence = [:] as Map<String, Integer>
+        def tagsOccurrence = [:] as Map<String, Integer>
         for (GrailsPlugin plugin : pluginList) {
-            String label = plugin.bintrayPackage?.owner
+            def label = plugin.owner
             if ( label ) {
-                if (!tagsOcurrence.containsKey(label)) {
-                    tagsOcurrence[label] = 1
+                if (!tagsOccurrence.containsKey(label)) {
+                    tagsOccurrence[label] = 1
                 } else {
-                    tagsOcurrence[label] = tagsOcurrence[label] + 1
+                    tagsOccurrence[label] = tagsOccurrence[label] + 1
                 }
             }
         }
-        tagListFromTagsOcurrence(tagsOcurrence)
+        tagListFromTagsOccurrence tagsOccurrence
     }
 
     List<Tag> labelsTagCloud(List<GrailsPlugin> pluginList) {
-        Map<String, Integer> tagsOcurrence = [:] as Map<String, Integer>
-        for (GrailsPlugin plugin : pluginList) {
-            List<String> labels = plugin.bintrayPackage?.labels
+        def tagsOccurrence = [:] as Map<String, Integer>
+        for (def plugin : pluginList) {
+            def labels = plugin.labels.collect { it.toLowerCase() }
             if ( labels ) {
-                for (String label : labels) {
-                    if (!tagsOcurrence.containsKey(label)) {
-                        tagsOcurrence[label] = 1
+                for (def label : labels) {
+                    if (!tagsOccurrence.containsKey(label)) {
+                        tagsOccurrence[label] = 1
                     } else {
-                        tagsOcurrence[label] = tagsOcurrence[label] + 1
+                        tagsOccurrence[label] = tagsOccurrence[label] + 1
                     }
                 }
             }
         }
-        tagListFromTagsOcurrence(tagsOcurrence)
+        tagListFromTagsOccurrence(tagsOccurrence)
     }
 
-    List<Tag> tagListFromTagsOcurrence(Map<String, Integer> tagsOcurrence) {
-        tagsOcurrence?.collect { String k, Integer v -> new Tag(title: k, ocurrence: v) }?.sort { Tag a, Tag b ->
+    List<Tag> tagListFromTagsOccurrence(Map<String, Integer> tagsOccurrence) {
+        tagsOccurrence?.collect { String k, Integer v -> new Tag(title: k, occurrence: v) }?.sort { Tag a, Tag b ->
             a.title <=> b.title
         }
     }
@@ -114,5 +106,5 @@ class PluginsTagLib {
 
 class Tag {
     String title
-    int ocurrence
+    int occurrence
 }

@@ -20,15 +20,15 @@
 
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class=""><a href="https://grails.org/learn.html">Learn</a></li>
-                    <li class=""><a href="https://guides.grails.org">Guides</a></li>
-                    <li class=""><a href="https://grails.org/documentation.html">Documentation</a></li>
-                    <li class=""><a href="https://grails.org/download.html">Download</a></li>
-                    <li class=""><a href="https://plugins.grails.org">Plugins</a></li>
-                    <li class=""><a href="https://grails.org/community.html">Community</a></li>
-                    <li class=""><a href="https://grails.org/support.html">Support</a></li>
+                    <li><a href="https://grails.org/learn.html">Learn</a></li>
+                    <li><a href="https://guides.grails.org">Guides</a></li>
+                    <li><a href="https://grails.org/download.html">Download</a></li>
+                    <li><a href="https://grails.org/documentation.html">Documentation</a></li>
+                    <li><a href="https://plugins.grails.org">Plugins</a></li>
+                    <li><a href="https://grails.org/community.html">Community</a></li>
+                    <li><a href="https://grails.org/support.html">Support</a></li>
                     <li><a class="socialize-button" href="#">Socialize</a></li>
-                    <li class=""><a href="https://grails.org/search.html"><i class="fa fa-search"></i></a></li>
+                    <li><a href="https://grails.org/search.html"><i class="fa fa-search"></i></a></li>
                 </ul>
             </div>
         </div>

@@ -143,6 +143,11 @@ h6 {
 	margin-bottom: 44px !important; /* 44px + 6px tag margin bottom */
 }
 
+article h2 {
+	font-size: 1.2em;
+	margin-top: 1.4em;
+}
+
 article section {
 	margin-bottom: 50px;
 }
@@ -1418,6 +1423,22 @@ body.grails3plugins article {
 	background-color: #ffffff;
 }
 
+.alert {
+	padding: 1rem;
+	border-radius: 0.375rem;
+}
+
+.alert-danger {
+	background-color: rgb(248, 215, 218);
+	border: 1px solid rgb(245, 194, 199);
+	color: rgb(132, 32, 41);
+}
+
+.alert-info {
+	background-color: rgb(207, 244, 252);
+	border: 1px solid rgb(182, 239, 251);
+	color: rgb(5, 81, 96);
+}
 
 .plugins-list {
 	padding: 30px 0 0 30px;
@@ -1532,11 +1553,8 @@ body.grails3plugins li.label a {
 }
 
 .githubstar {
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
 	border-collapse: collapse;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
+	border-radius: 5px;
 	display: block;
 	/* Fallback (could use .jpg/.png alternatively) */
 	background-color: #F4F4F4;

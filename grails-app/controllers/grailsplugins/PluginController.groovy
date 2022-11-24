@@ -1,95 +1,72 @@
 package grailsplugins
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import grails.config.Config
-import grails.core.support.GrailsConfigurationAware
+import grails.converters.JSON
+import grailsplugins.config.PluginControllerConfig
+import grailsplugins.services.PluginService
 import groovy.transform.CompileStatic
+import jakarta.inject.Inject
 
 @CompileStatic
-class PluginController implements GrailsConfigurationAware {
+class PluginController {
 
-    static allowedMethods = [
-            index: 'GET',
-            refresh: 'POST',
-            plugin: 'GET',
-            pluginWithOwner: 'GET',
-            legacyPlugins: 'GET'
+    final static Map allowedMethods = [
+        index: 'GET',
+        refresh: 'POST',
+        plugin: 'GET',
+        pluginWithOwner: 'GET',
+        legacyPlugins: 'GET'
     ]
 
-    GrailsPluginsRepository grailsPluginsRepository
-    GrailsPluginsService grailsPluginsService
+    private final PluginService pluginService
+    private final boolean refreshEnabled
 
-    boolean refreshEnabled
-
-    @Override
-    void setConfiguration(Config co) {
-        refreshEnabled = co.getProperty('com.grails.plugins.refresh.enabled', Boolean, false)
+    @Inject
+    PluginController(PluginService pluginService, PluginControllerConfig config) {
+        this.pluginService = pluginService
+        this.refreshEnabled = config.refreshEnabled
     }
 
     def index(String query) {
-        List<GrailsPlugin> pluginList
-        int total
-        if ( query ) {
-            pluginList = grailsPluginsRepository.findByQuery(query)
-            total = grailsPluginsRepository.count()
-        } else {
-            pluginList = grailsPluginsRepository.findAll()
-            total = pluginList.size()
-        }
-        render(view: 'index', model: [
-                pluginList: pluginList,
-                query: query,
-                pluginTotal: total,
-                topRatedPlugins: grailsPluginsRepository.topRatedPlugins(),
-                latestPlugins: grailsPluginsRepository.latestPlugins(),
-        ])
+        def plugins = query ? pluginService.findPluginsByQuery(query) : pluginService.allPlugins
+        render view: 'index', model: [
+            pluginList: plugins,
+            query: query,
+            pluginTotal: pluginService.totalPluginCount,
+            topRatedPlugins: pluginService.topRatedPlugins,
+            latestPlugins: pluginService.latestPlugins,
+        ]
     }
 
     def legacyPlugins() {
-        List<GrailsPlugin> pluginList = grailsPluginsRepository.findAll()
-        render(view: 'legacyPlugins', model: [
-            pluginList: pluginList,
+        def plugins = pluginService.allPlugins
+        render view: 'legacyPlugins', model: [
+            pluginList: plugins,
             query: null,
-            pluginTotal: pluginList.size(),
-            topRatedPlugins: grailsPluginsRepository.topRatedPlugins(),
-            latestPlugins: grailsPluginsRepository.latestPlugins(),
-        ])
+            pluginTotal: plugins.size(),
+            topRatedPlugins: pluginService.topRatedPlugins,
+            latestPlugins: pluginService.latestPlugins,
+        ]
     }
 
     def refresh() {
-        if ( !refreshEnabled ) {
-            render status: 404
-            return
-        }
-        grailsPluginsService.refresh()
+        if (!refreshEnabled) { render status: 404; return }
+        pluginService.refreshPluginRegistry()
         redirect action: 'index'
     }
 
     def plugin(String pluginName) {
-        GrailsPlugin plugin = grailsPluginsRepository.findByPluginName(pluginName)
-        if ( !plugin ) {
-            response.sendError(404)
-            return
-        }
+        def plugin = pluginService.findPluginByName pluginName
+        if (!plugin) { render status: 404; return }
         [plugin: plugin]
     }
 
     def pluginWithOwner(String ownerName, String pluginName) {
-
-        GrailsPlugin plugin = grailsPluginsRepository.find(new BintrayKey(owner: ownerName, name: pluginName))
-
-        if ( !plugin ) {
-            response.sendError(404)
-            return
-        }
+        def plugin = pluginService.findPlugin(PluginId.of ownerName, pluginName)
+        if (!plugin) { render status: 404; return }
         render view: 'plugin', model: [plugin: plugin]
     }
 
     def json() {
-        List<GrailsPlugin> pluginList = grailsPluginsRepository.findAll()
-        final ObjectMapper objectMapper = new ObjectMapper()
-        objectMapper.writeValue(response.outputStream, pluginList)
-        response.outputStream.flush()
-        return
+        render pluginService.allPlugins as JSON
     }
 }

@@ -1,0 +1,4 @@
+---
+grails:
+  serverURL: https://plugins.grails.org
+---
