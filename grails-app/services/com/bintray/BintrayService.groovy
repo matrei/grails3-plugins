@@ -48,16 +48,15 @@ class BintrayService implements GrailsConfigurationAware {
     @Deprecated
     BintrayPackage fetchBintrayPackage(String name, String organization = this.organization, String repository = this.repository) throws IOException {
         final String url = "/packages/${organization}/${repository}/${name}".toString()
-        HttpResponse<BintrayPackage> response = null
         try {
             log.trace("sending request to {}", url)
-            response = client
+            HttpResponse<BintrayPackage> response = client
                     .exchange(HttpRequest.GET(url).basicAuth(username, token), BintrayPackage)
             log.trace("fetched bintray packages {}", url)
             return response?.body()
 
         } catch(HttpClientResponseException e) {
-            log.warn 'Response {}. Could not fetch bintray package at {}', response?.status?.code, name
+            log.warn 'Response {}. Could not fetch bintray package at {}', e.status.code, name
         }
         null
     }
@@ -72,9 +71,8 @@ class BintrayService implements GrailsConfigurationAware {
         String url = UriBuilder.of("/repos/grails/plugins/packages").queryParam("start_pos", startPos).build()
         log.debug("fetching {}", url)
 
-        HttpResponse<List<BintrayPackageSimple>> response = null
         try {
-            response = client.exchange(HttpRequest.GET(url).basicAuth(username, token), Argument.of(List, BintrayPackageSimple))
+            def response = client.exchange(HttpRequest.GET(url).basicAuth(username, token), Argument.of(List, BintrayPackageSimple))
 
             log.trace("fetched {}", url)
             List<BintrayPackageSimple> bintrayPackageList = response?.body()
@@ -84,8 +82,7 @@ class BintrayService implements GrailsConfigurationAware {
                     total: totalHeader(response.headers),
                     bintrayPackageList: bintrayPackageList)
         } catch(HttpClientResponseException e) {
-            log.warn 'Response {}. Could not fetch bintray packages at {}', response.status.code, startPos
-
+            log.warn 'Response {}. Could not fetch bintray packages at {}', e.status.code, startPos
         }
     }
 

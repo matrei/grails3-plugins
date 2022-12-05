@@ -44,14 +44,13 @@ class GithubService implements GrailsConfigurationAware {
             return null
         }
         final String url = "/repos/${ownerAndRepo}".toString()
-        HttpResponse<GithubRepository> response = null
         try {
-            response = client.exchange(HttpRequest.GET(url).basicAuth(username, token)
+            HttpResponse<GithubRepository> response = client.exchange(HttpRequest.GET(url).basicAuth(username, token)
                     .header("User-Agent", userAgent), GithubRepository)
             log.trace("fetched {} github repository", ownerAndRepo)
             return response.body()
         } catch(HttpClientResponseException e) {
-            log.warn 'Response {}. Could not fetch github repository at {}', response?.status?.code, vcsUrl
+            log.warn 'Response {}. Could not fetch github repository at {}', e.status.code, vcsUrl
         }
         null
     }

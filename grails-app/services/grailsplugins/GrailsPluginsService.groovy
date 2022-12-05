@@ -113,7 +113,7 @@ class GrailsPluginsService implements GrailsConfigurationAware {
                         .forEach({ plugin -> process(plugin) })
             }
         } catch (HttpClientResponseException e) {
-            log.warn 'Response {}. Could not fetch Grails plugin metadata from Gituhb with error {}', response.status.code, e.message
+            log.warn 'Response {}. Could not fetch Grails plugin metadata from Gituhb with error {}', e.status.code, e.message
         }
     }
 
